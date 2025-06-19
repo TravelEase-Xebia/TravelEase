@@ -1,1 +1,1 @@
-This branch will be used for catalog service
+This branch will be used for booking service
