@@ -1,1 +1,1 @@
-This branch will be used for frontend service
+This branch will be used for Login service
