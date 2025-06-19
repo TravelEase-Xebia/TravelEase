@@ -1,1 +1,2 @@
-This branch will be used for Login service
+This Branch is used for Login/Register MicroService
+Port=5000
