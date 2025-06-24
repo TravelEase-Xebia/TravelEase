@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flight Booking Service</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Book Your Flight</h1>
+  <form id="bookingForm">
+    <input type="text" id="departure" placeholder="Departure" required>
+    <input type="text" id="destination" placeholder="Destination" required>
+    <input type="date" id="date" required>
+    <button type="submit">Book</button>
+  </form>
+
+  <h2>Existing Bookings</h2>
+  <ul id="bookingsList"></ul>
+
+  <script>
+    const form = document.getElementById("bookingForm");
+    const bookingsList = document.getElementById("bookingsList");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const departure = document.getElementById("departure").value;
+      const destination = document.getElementById("destination").value;
+      const date = document.getElementById("date").value;
+
+      await fetch("/api/bookings", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ departure, destination, date }),
+      });
+
+      form.reset();
+      loadBookings();
+    });
+
+    async function loadBookings() {
+      const res = await fetch("/api/bookings");
+      const bookings = await res.json();
+      bookingsList.innerHTML = "";
+      bookings.forEach((b) => {
+        const li = document.createElement("li");
+        li.textContent = `${b.departure} ➝ ${b.destination} on ${b.date}`;
+        bookingsList.appendChild(li);
+      });
+    }
+
+    loadBookings();
+  </script>
+</body>
+</html>
