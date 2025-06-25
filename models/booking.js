@@ -12,6 +12,10 @@ const BookingSchema = new mongoose.Schema({
   date: {
     type: String,
     required: true
+  },
+  flight: {
+    type: String,
+    required: true
   }
 });
 

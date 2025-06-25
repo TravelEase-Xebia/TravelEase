@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -11,7 +11,7 @@
     <input type="text" id="departure" placeholder="Departure" required>
     <input type="text" id="destination" placeholder="Destination" required>
     <input type="date" id="date" required>
-    <button type="submit">Book</button>
+    <button type="submit">Search Flight </button>
   </form>
 
   <h2>Existing Bookings</h2>
@@ -49,6 +49,82 @@
     }
 
     loadBookings();
+  </script>
+</body>
+</html> -->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flight Booking Service</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Find & Book a Flight</h1>
+
+  <!-- Flight Search Form -->
+  <form id="flightSearchForm">
+    <input type="text" id="departure" placeholder="Departure" required>
+    <input type="text" id="destination" placeholder="Destination" required>
+    <input type="date" id="date" required>
+    <button type="submit">Search Flights</button>
+  </form>
+
+  <!-- Available Flights -->
+  <h2>Available Flights</h2>
+  <ul id="flightsList"></ul>
+
+  <script>
+    const flightSearchForm = document.getElementById("flightSearchForm");
+    const flightsList = document.getElementById("flightsList");
+
+    // Handle Search
+    flightSearchForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const departure = document.getElementById("departure").value;
+      const destination = document.getElementById("destination").value;
+      const date = document.getElementById("date").value;
+
+      const res = await fetch(`/api/searchflights?departure=${encodeURIComponent(departure)}&destination=${encodeURIComponent(destination)}`);
+      const flights = await res.json();
+
+      flightsList.innerHTML = "";
+
+      if (flights.length === 0) {
+        const li = document.createElement("li");
+        li.textContent = "No flights found for this route.";
+        flightsList.appendChild(li);
+        return;
+      }
+
+      // Show each flight with "Book" button
+      flights.forEach((flight) => {
+        const li = document.createElement("li");
+        li.textContent = `${flight.flight} — ${flight.departure} ➝ ${flight.destination} on ${flight.date} `;
+
+        const bookBtn = document.createElement("button");
+        bookBtn.textContent = "Book";
+
+        // Redirect to payment page with query params
+        bookBtn.onclick = () => {
+          const params = new URLSearchParams({
+            departure: flight.departure,
+            destination: flight.destination,
+            date: flight.date,
+            flight: flight.flight
+          });
+
+          window.location.href = `/payment.html?${params.toString()}`;
+        };
+
+        li.appendChild(bookBtn);
+        flightsList.appendChild(li);
+      });
+    });
   </script>
 </body>
 </html>

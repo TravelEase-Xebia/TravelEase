@@ -15,10 +15,10 @@ app.get("/", (req, res) => {
 });
 
 // Get all bookings
-app.get("/api/bookings", async (req, res) => {
-  const bookings = await Booking.find();
-  res.json(bookings);
-});
+// app.get("/api/bookings", async (req, res) => {
+//   const bookings = await Booking.find();
+//   res.json(bookings);
+// });
 
 // Add new booking
 app.post("/api/bookings", async (req, res) => {
@@ -27,6 +27,27 @@ app.post("/api/bookings", async (req, res) => {
   await newBooking.save();
   res.json({ message: "Booking successful", booking: newBooking });
 });
+
+app.get("/api/searchflights", async(req,res)=>{
+  const {departure, destination} = req.query;
+  if(!departure || !destination){
+    return res.status(400).json({message: 'Please provide both departure and destination'});
+  }
+
+  try{
+    const flights = await Booking.find({
+      departure: {$regex: new RegExp(departure, 'i')},
+      destination: {$regex: new RegExp(destination, 'i')},
+    });
+
+    if(flights.length === 0){
+      return res.status(404).json({message: 'No flights found on this route '});
+    }
+    res.json(flights);
+  }catch(err){
+    res.status(500).json({message: "Server Error ", error: err.message});
+  }
+})
 
 const PORT = process.env.PORT;
 
