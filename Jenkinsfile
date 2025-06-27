@@ -19,6 +19,13 @@ pipeline {
                 }
             }
         }
+         stage('Installing Dependencies') {
+            steps {
+                dir('frontend') {
+                    sh 'npm install'
+                }
+            }
+        }
          stage('Build Code') {
             steps {
                 dir('frontend') {
