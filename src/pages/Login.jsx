@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+
 import "./AuthForm.css";
 
 const Login = () => {
-  const [formData, setFormData] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({ username: "", password: "" });
   const [errors, setErrors] = useState({});
 
   const handleChange = (e) => {
@@ -12,18 +16,41 @@ const Login = () => {
   };
 
   const validateForm = () => {
-    const newErrors = {};
-    if (!formData.email) newErrors.email = "Email is required";
-    else if (!/^\S+@\S+\.\S+$/.test(formData.email)) newErrors.email = "Invalid email";
-    if (!formData.password) newErrors.password = "Password is required";
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
+  const newErrors = {};
+  if (!formData.username) newErrors.username = "Username is required";
+  if (!formData.password) newErrors.password = "Password is required";
+  setErrors(newErrors);
+  return Object.keys(newErrors).length === 0;
+}
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      alert("Login successful!"); // Replace with API call
+      const loginData = {
+        username: formData.username,
+        password: formData.password,
+      }
+      try{
+        const response = await fetch("http://localhost:5050/auth/login",{
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(loginData)
+        });
+        if(response.ok){
+          const data = await response.json();
+          console.log("Token or response data: ", data);
+          navigate("/flightsearch");
+        }else{
+          const error = await response.json();
+          alert("Login Failed"+ (error.message || "Invalid credentails"));
+        }
+      }catch(err){
+        console.log("Error during login: ", err);
+        alert("An error occured Please try again ");
+      }
     }
   };
 
@@ -33,15 +60,15 @@ return (
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
-          <label>Email</label>
+          <label>Username</label>
           <input
-            type="email"
-            name="email"
-            value={formData.email}
+            type="string"
+            name="username"
+            value={formData.username}
             onChange={handleChange}
-            className={errors.email ? "error" : ""}
+            className={errors.username ? "error" : ""}
           />
-          {errors.email && <span className="error-message">{errors.email}</span>}
+          {errors.username && <span className="error-message">{errors.username}</span>}
         </div>
 
         <div className="form-group">
