@@ -65,7 +65,7 @@ pipeline {
                         credentialsId: 'aws-cred'
                     ]]) {
                         sh '''
-                            aws s3 cp ./fs-frontend.html s3://travel-ease-frontend-trivy-report/ --recursive
+                            aws s3 cp /var/lib/jenkins/workspace/travel_ease_frontend/fs-frontend.html s3://travel-ease-frontend-trivy-report/ --recursive
                         '''
                     }
                 
@@ -103,7 +103,7 @@ pipeline {
                         credentialsId: 'aws-cred'
                     ]]) {
                         sh '''
-                            aws s3 cp ./image-frontend.html s3://travel-ease-frontend-trivy-report/ --recursive
+                            aws s3 cp /var/lib/jenkins/workspace/travel_ease_frontend/image-frontend.html s3://travel-ease-frontend-trivy-report/ --recursive
                         '''
                     }
             
