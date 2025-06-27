@@ -2,5 +2,5 @@ projectKey=TravelEase-frontend
 serverUrl=http://13.126.108.202:9000
 serverVersion=9.9.8.100196
 dashboardUrl=http://13.126.108.202:9000/dashboard?id=TravelEase-frontend
-ceTaskId=AZeyXQC_rUaVezu64wIj
-ceTaskUrl=http://13.126.108.202:9000/api/ce/task?id=AZeyXQC_rUaVezu64wIj
+ceTaskId=AZeyXZ37rUaVezu64wIk
+ceTaskUrl=http://13.126.108.202:9000/api/ce/task?id=AZeyXZ37rUaVezu64wIk
