@@ -57,6 +57,20 @@ pipeline {
                 sh 'trivy fs --format table -o fs-frontend.html .'
             }
         }
+        stage('Upload fs scan to S3') {
+            steps {
+                dir('frontend') {
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'aws-cred'
+                    ]]) {
+                        sh '''
+                            aws s3 cp ./fs-frontend.html s3://travel-ease-frontend-trivy-report/ --recursive
+                        '''
+                    }
+                }
+            }
+        }
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('sonar-server') {
@@ -79,6 +93,20 @@ pipeline {
         stage('Trivy Image Scan') {
             steps {
                 sh 'trivy image --format table -o image-frontend.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
+            }
+        }
+        stage('Upload Image scan to S3') {
+            steps {
+                dir('frontend') {
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'aws-cred'
+                    ]]) {
+                        sh '''
+                            aws s3 cp ./image-frontend.html s3://travel-ease-frontend-trivy-report/ --recursive
+                        '''
+                    }
+                }
             }
         }
         stage('Login ECR') {
