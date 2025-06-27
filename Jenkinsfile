@@ -75,20 +75,20 @@ pipeline {
         }
         stage('pulling main production branch') {
             steps {
-                dir('TravelEase') {
-                    git branch: 'main', credentialsId: 'bhavesh', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
+                dir('travelEaseProdTest') {
+                    git branch: 'main', credentialsId: 'bhavesh', url: 'https://github.com/Bhavesh-Kapur/travelEaseProdTest.git'
                 }
             }
         }
         stage('Updating main production branch') {
             steps {
-                sh 'mkdir -p ./TravelEase/payment'
-                sh 'rsync -av --exclude=".git" ./payment/ ./TravelEase/payment/'
+                sh 'mkdir -p ./travelEaseProdTest/payment'
+                sh 'rsync -av --exclude=".git" ./payment/ ./travelEaseProdTest/payment/'
             }
         }
         stage('push code to main production branch') {
             steps {
-                dir('TravelEase') {
+                dir('travelEaseProdTest') {
             withCredentials([usernamePassword(credentialsId: 'bhavesh', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
                 sh '''
                     git config user.name "$GIT_USER"
@@ -96,7 +96,7 @@ pipeline {
 
                     git add .
                     git commit -m "CI: Updated payment into main production branch" || echo "No changes to commit"
-                    git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:main
+                    git push https://$GIT_USER:$GIT_TOKEN@github.com/Bhavesh-Kapur/travelEaseProdTest.git HEAD:main
                 '''
             }
         }
