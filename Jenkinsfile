@@ -59,7 +59,7 @@ pipeline {
         }
         stage('Upload fs scan to S3') {
             steps {
-                dir('frontend') {
+               
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: 'aws-cred'
@@ -68,7 +68,7 @@ pipeline {
                             aws s3 cp ./fs-frontend.html s3://travel-ease-frontend-trivy-report/ --recursive
                         '''
                     }
-                }
+                
             }
         }
         stage('SonarQube Analysis') {
@@ -97,7 +97,7 @@ pipeline {
         }
         stage('Upload Image scan to S3') {
             steps {
-                dir('frontend') {
+              
                     withCredentials([[
                         $class: 'AmazonWebServicesCredentialsBinding',
                         credentialsId: 'aws-cred'
@@ -106,7 +106,7 @@ pipeline {
                             aws s3 cp ./image-frontend.html s3://travel-ease-frontend-trivy-report/ --recursive
                         '''
                     }
-                }
+            
             }
         }
         stage('Login ECR') {
