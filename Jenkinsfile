@@ -19,6 +19,27 @@ pipeline {
                 }
             }
         }
+         stage('Build Code') {
+            steps {
+                dir('frontend') {
+                    sh 'npm run build'
+                }
+            }
+        }
+        stage('Upload Build to S3') {
+            steps {
+                dir('frontend') {
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'aws-cred'
+                    ]]) {
+                        sh '''
+                            aws s3 cp ./dist s3://travel-ease-frontend-build/ --recursive
+                        '''
+                    }
+                }
+            }
+        }
         stage('Unit Test') {
             steps {
                 echo 'Hello World'
@@ -83,17 +104,18 @@ pipeline {
         stage('Updating main production branch') {
             steps {
                 sh 'mkdir -p ./TravelEase/frontend'
-                sh 'rsync -av --exclude=".git" ./frontend/ ./TravelEase/frontend/'
+                sh 'rsync -av --exclude=".git" --exclude="dist" ./frontend/ ./TravelEase/frontend/'
             }
         }
         stage('push code to main production branch') {
             steps {
                 dir('TravelEase') {
             withCredentials([usernamePassword(credentialsId: 'travel', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                git branch: 'main', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 sh '''
                     git config user.name "$GIT_USER"
                     git config user.email "$GIT_USER@users.noreply.github.com"
-
+                    
                     git add .
                     git commit -m "CI: Updated frontend into main production branch" || echo "No changes to commit"
                     git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:main
