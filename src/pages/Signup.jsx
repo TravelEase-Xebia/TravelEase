@@ -22,10 +22,34 @@ const Signup = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      alert("Account created successfully!"); // Replace with actual API call
+       const signupData = {
+        username: formData.name,
+        email: formData.email,
+        password: formData.password,
+       }
+        try{
+          const response = await fetch("http://localhost:5050/auth/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(signupData),
+          });
+          if(response.ok){
+            const data = await response.json();
+            alert("Account created succesfully ");
+            console.log("Signup response", data);
+          }else{
+            const error = await response.json();
+            alert("Signup failed "+ (error.message || "Something went wrong "));
+          }
+        }catch (err){
+          console.log("Error during signup", err);
+          alert("An error occured Please try again ");
+        }
     }
   };
 
