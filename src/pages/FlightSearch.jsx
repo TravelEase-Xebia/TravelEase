@@ -26,7 +26,7 @@ const FlightSearch = () => {
     const params = new URLSearchParams({
       departure: flight.departure,
       destination: flight.destination,
-      date: flight.date,
+      date: date,
       flight: flight.flight
     });
     navigate(`/payment?${params.toString()}`);
@@ -69,7 +69,7 @@ const FlightSearch = () => {
         ) : (
           flights.map((flight, index) => (
             <li key={index}>
-              {flight.flight} — {flight.departure} ➝ {flight.destination} on {flight.date}{" "}
+              {flight.flight} — {flight.departure} ➝ {flight.destination} on {date}{" "}
               <button onClick={() => handleBook(flight)}>Book</button>
             </li>
           ))
