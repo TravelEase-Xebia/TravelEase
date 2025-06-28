@@ -31,7 +31,7 @@ const Signup = () => {
         password: formData.password,
        }
         try{
-          const response = await fetch(`${import.meta.env.VITE_LOGIN_API_URL}:${import.meta.env.VITE_LOGIN_PORT}/auth/register`, {
+          const response = await fetch(`${import.meta.env.VITE_LOGIN_API_URL}:5050/auth/register`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
