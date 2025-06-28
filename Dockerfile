@@ -7,6 +7,11 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 COPY . .
+
+# Accept build-time environment variables
+ARG VITE_LOGIN_API_URL
+ARG VITE_LOGIN_PORT
+
 RUN npm run build
 
 # Step 2: Serve with NGINX (latest Alpine, possibly patched)
