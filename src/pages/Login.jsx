@@ -32,7 +32,7 @@ const Login = () => {
         password: formData.password,
       }
       try{
-        const response = await fetch(`${import.meta.env.VITE_LOGIN_API_URL}/auth/login`,{
+        const response = await fetch(`${import.meta.env.VITE_LOGIN_API_URL}:${import.meta.env.VITE_LOGIN_PORT}/auth/login`,{
           method: "POST",
           headers: {
             "Content-Type": "application/json",

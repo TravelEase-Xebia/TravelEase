@@ -13,7 +13,7 @@ const FlightSearch = () => {
 
     try {
       const res = await fetch(
-        `${import.meta.env.VITE_BOOKING_API_URL}/api/searchflights?departure=${encodeURIComponent(departure)}&destination=${encodeURIComponent(destination)}`
+        `${import.meta.env.VITE_BOOKING_API_URL}:${import.meta.env.VITE_BOOKING_PORT}/api/searchflights?departure=${encodeURIComponent(departure)}&destination=${encodeURIComponent(destination)}`
       );
       const data = await res.json();
       setFlights(data);
