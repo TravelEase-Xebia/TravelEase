@@ -38,7 +38,10 @@ services:
     environment:
       VITE_LOGIN_API_URL: http://login:5050 
       VITE_PAYMENT_API_URL: http://payment:5070 
-      VITE_BOOKING_API_URL: http://booking:3001
+      VITE_BOOKING_API_URL: http://booking
+      VITE_BOOKING_PORT: 3001
+      VITE_PAYMENT_PORT: 5070
+      VITE_LOGIN_PORT: 5050
     depends_on:
       - booking
       - payment
