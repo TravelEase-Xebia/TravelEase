@@ -7,6 +7,7 @@ services:
       - mern_network
     environment:
       MONGO_URI: mongodb+srv://Sujal:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0 
+      PORT: 3001 
       
   payment:
     build: ./payment
@@ -16,6 +17,7 @@ services:
       - mern_network
     environment:
       MONGO_URI: mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0 
+      PORT: PORT
       
   login:
     build: ./login
@@ -25,6 +27,7 @@ services:
       - mern_network
     environment:
       MONGO_URI: mongodb+srv://Kavya:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0  
+      PORT: 5050
 
   frontend:
     build: ./frontend
