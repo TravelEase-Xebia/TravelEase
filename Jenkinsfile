@@ -33,20 +33,6 @@ pipeline {
                 }
             }
         }
-        stage('Upload Build to S3') {
-            steps {
-                dir('frontend') {
-                    withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'aws-cred'
-                    ]]) {
-                        sh '''
-                            aws s3 cp ./dist s3://travel-ease-frontend-build/ --recursive
-                        '''
-                    }
-                }
-            }
-        }
         stage('Unit Test') {
             steps {
                 echo 'Hello World'
