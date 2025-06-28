@@ -23,7 +23,7 @@ const Payment = () => {
     e.preventDefault();
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_PAYMENT_API_URL}:${import.meta.env.VITE_PAYMENT_PORT}/api/payment`, {
+      const res = await fetch(`${import.meta.env.VITE_PAYMENT_API_URL}:5070/api/payment`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
