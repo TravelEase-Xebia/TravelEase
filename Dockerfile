@@ -1,5 +1,5 @@
 # Step 1: Build the React app
-FROM node:18-alpine as builder
+FROM node:18-alpine AS builder
 
 WORKDIR /app
 
@@ -11,6 +11,10 @@ COPY . .
 # Accept build-time environment variables
 ARG VITE_LOGIN_API_URL
 ARG VITE_LOGIN_PORT
+
+# These will be picked up by Vite if defined as VITE_*
+ENV VITE_LOGIN_API_URL=$VITE_LOGIN_API_URL
+ENV VITE_LOGIN_PORT=$VITE_LOGIN_PORT
 
 RUN npm run build
 
