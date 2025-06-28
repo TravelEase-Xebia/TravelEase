@@ -31,7 +31,8 @@ services:
       JWT_SECRET: y2cjouqyr
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
       args:
         VITE_LOGIN_API_URL: http://login
         VITE_PAYMENT_API_URL: http://payment
@@ -53,7 +54,7 @@ services:
     depends_on:
       - booking
       - payment
-      - login 
+      - login
 
 networks:
   mern_network:
