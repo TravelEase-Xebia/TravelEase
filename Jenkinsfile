@@ -19,13 +19,6 @@ pipeline {
                 }
             }
         }
-         stage('Installing Dependencies') {
-            steps {
-                dir('login') {
-                    sh 'npm install'
-                }
-            }
-        }
         stage('Unit Test') {
             steps {
                 echo 'Hello World'
