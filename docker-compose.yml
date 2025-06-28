@@ -33,9 +33,9 @@ services:
     networks:
       - mern_network
     environment:
-      LOGIN_API_URL: http://login:5050 
-      PAYMENT_API_URL: http://payment:5070 
-      BOOKING_API_URL: http://booking:3001
+      VITE_LOGIN_API_URL: http://login:5050 
+      VITE_PAYMENT_API_URL: http://payment:5070 
+      VITE_BOOKING_API_URL: http://booking:3001
     depends_on:
       - booking
       - payment
