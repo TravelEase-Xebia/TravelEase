@@ -117,7 +117,6 @@ pipeline {
             steps {
                 dir('TravelEase') {
             withCredentials([usernamePassword(credentialsId: 'travel', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                git branch: 'dev-prod', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 sh '''
                     git config user.name "$GIT_USER"
                     git config user.email "$GIT_USER@users.noreply.github.com"
