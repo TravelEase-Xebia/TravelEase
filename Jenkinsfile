@@ -100,14 +100,14 @@ pipeline {
                 }
             }
         }
-        stage('pulling main production branch') {
+        stage('pulling dev production branch') {
             steps {
                 dir('TravelEase') {
-                    git branch: 'main', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
+                    git branch: 'dev-prod', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 }
             }
         }
-        stage('Updating main production branch') {
+        stage('Updating dev production branch') {
             steps {
                 sh 'mkdir -p ./TravelEase/frontend'
                 sh 'rsync -av --exclude=".git" --exclude="dist" ./frontend/ ./TravelEase/frontend/'
@@ -117,14 +117,14 @@ pipeline {
             steps {
                 dir('TravelEase') {
             withCredentials([usernamePassword(credentialsId: 'travel', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                git branch: 'main', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
+                git branch: 'dev-prod', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 sh '''
                     git config user.name "$GIT_USER"
                     git config user.email "$GIT_USER@users.noreply.github.com"
                     
                     git add .
                     git commit -m "CI: Updated frontend into main production branch" || echo "No changes to commit"
-                    git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:main
+                    git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:dev-prod
                 '''
             }
         }
