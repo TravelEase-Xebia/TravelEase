@@ -103,14 +103,13 @@ pipeline {
             steps {
                 dir('TravelEase') {
             withCredentials([usernamePassword(credentialsId: 'akshat', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
-                git branch: 'dev-prod', credentialsId: 'akshat', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 sh '''
                     git config user.name "$GIT_USER"
                     git config user.email "$GIT_USER@users.noreply.github.com"
                     
                     git add .
                     git commit -m "CI: Updated login into main production branch" || echo "No changes to commit"
-                    git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:dev-prod
+                    git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:main
                 '''
             }
         }
