@@ -109,7 +109,7 @@ pipeline {
                     
                     git add .
                     git commit -m "CI: Updated login into main production branch" || echo "No changes to commit"
-                    git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:main
+                    git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:dev-prod
                 '''
             }
         }
