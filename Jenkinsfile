@@ -53,6 +53,19 @@ pipeline {
                 sh 'trivy image --format table -o image-payment.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
             }
         }
+        stage('Upload Trivy scan reports to S3') {
+            steps {
+              
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'aws-cred'
+                    ]]) {
+                        sh 'aws s3 cp image-payment.html s3://travel-ease-payment-trivy-report/'
+                        sh 'aws s3 cp fs-payment.html s3://travel-ease-payment-trivy-report/'
+                    }
+            
+            }
+        }
         stage('Login ECR') {
             steps {
                 withCredentials([[
@@ -76,14 +89,14 @@ pipeline {
         stage('pulling main production branch') {
             steps {
                 dir('travelEaseProdTest') {
-                    git branch: 'main', credentialsId: 'bhavesh', url: 'https://github.com/Bhavesh-Kapur/travelEaseProdTest.git'
+                    git branch: 'dev-prod', credentialsId: 'bhavesh', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 }
             }
         }
         stage('Updating main production branch') {
             steps {
-                sh 'mkdir -p ./travelEaseProdTest/payment'
-                sh 'rsync -av --exclude=".git" ./payment/ ./travelEaseProdTest/payment/'
+                sh 'mkdir -p ./TravelEase/payment'
+                sh 'rsync -av --exclude=".git" ./payment/ ./TravelEase/payment/'
             }
         }
         stage('push code to main production branch') {
@@ -95,8 +108,8 @@ pipeline {
                     git config user.email "$GIT_USER@users.noreply.github.com"
 
                     git add .
-                    git commit -m "CI: Updated payment into main production branch" || echo "No changes to commit"
-                    git push https://$GIT_USER:$GIT_TOKEN@github.com/Bhavesh-Kapur/travelEaseProdTest.git HEAD:main
+                    git commit -m "CI: Updated payment into dev-prod production branch" || echo "No changes to commit"
+                    git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:dev-prod
                 '''
             }
         }
