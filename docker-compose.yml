@@ -46,9 +46,6 @@ services:
         VITE_LOGIN_API_URL: /api/login
         VITE_PAYMENT_API_URL: /api/payment
         VITE_BOOKING_API_URL: /api/booking
-        VITE_BOOKING_PORT: 3001
-        VITE_PAYMENT_PORT: 5070
-        VITE_LOGIN_PORT: 5050
     ports:
       - "80"  
     networks:
@@ -57,9 +54,6 @@ services:
       VITE_LOGIN_API_URL: /api/login
       VITE_PAYMENT_API_URL: /api/payment
       VITE_BOOKING_API_URL: /api/booking
-      VITE_BOOKING_PORT: 3001
-      VITE_PAYMENT_PORT: 5070
-      VITE_LOGIN_PORT: 5050
     depends_on:
       - booking
       - payment
