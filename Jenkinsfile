@@ -72,11 +72,11 @@ pipeline {
 
         stage('Trivy Image Scan') {
             steps {
-                sh "trivy image --format table -o dev-image-frontend.html ${ECR_REPO}-frontend:latest"
-                sh "trivy image --format table -o dev-image-payment.html ${ECR_REPO}-payment:latest"
-                sh "trivy image --format table -o dev-image-booking.html ${ECR_REPO}-booking:latest"
-                sh "trivy image --format table -o dev-image-nginx-proxy.html ${ECR_REPO}-nginx-proxy:latest"
-                sh "trivy image --format table -o dev-image-login.html ${ECR_REPO}-login:latest"
+                sh "trivy image --format table -o dev-image-frontend.html frontend:latest"
+                sh "trivy image --format table -o dev-image-payment.html payment:latest"
+                sh "trivy image --format table -o dev-image-booking.html booking:latest"
+                sh "trivy image --format table -o dev-image-nginx-proxy.html nginx-proxy:latest"
+                sh "trivy image --format table -o dev-image-login.html login:latest"
             }
         }
 
