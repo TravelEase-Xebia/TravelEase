@@ -43,9 +43,9 @@ services:
     build:
       context: ./frontend
       args:
-        VITE_LOGIN_API_URL: http://login/
-        VITE_PAYMENT_API_URL: http://payment/
-        VITE_BOOKING_API_URL: http://booking/
+        VITE_LOGIN_API_URL: http://login
+        VITE_PAYMENT_API_URL: http://payment
+        VITE_BOOKING_API_URL: http://booking
         VITE_BOOKING_PORT: 3001
         VITE_PAYMENT_PORT: 5070
         VITE_LOGIN_PORT: 5050
@@ -54,9 +54,9 @@ services:
     networks:
       - mern_network
     environment:
-      VITE_LOGIN_API_URL: http://login/
-      VITE_PAYMENT_API_URL: http://payment/
-      VITE_BOOKING_API_URL: http://booking/
+      VITE_LOGIN_API_URL: http://login
+      VITE_PAYMENT_API_URL: http://payment
+      VITE_BOOKING_API_URL: http://booking
       VITE_BOOKING_PORT: 3001
       VITE_PAYMENT_PORT: 5070
       VITE_LOGIN_PORT: 5050
