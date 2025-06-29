@@ -2,7 +2,7 @@ services:
   booking:
     build: ./booking
     ports:
-      - "3001:3001" 
+      - "3001" 
     networks:
       - mern_network
     environment:
@@ -12,7 +12,7 @@ services:
   payment:
     build: ./payment
     ports:
-      - "5070:5070" 
+      - "5070" 
     networks:
       - mern_network
     environment:
@@ -22,32 +22,41 @@ services:
   login:
     build: ./login
     ports:
-      - "5050:5050" 
+      - "5050" 
     networks:
       - mern_network
     environment:
       MONGO_URI: mongodb+srv://Kavya:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0  
       PORT: 5050
       JWT_SECRET: y2cjouqyr
+      
+  nginx-proxy:
+    build: ./nginx-proxy
+    ports:
+      - "80:80" 
+    networks:
+      - mern_network
+    depends_on:
+      - frontend
 
   frontend:
     build:
       context: ./frontend
       args:
-        VITE_LOGIN_API_URL: http://13.233.66.252
-        VITE_PAYMENT_API_URL: http://13.233.66.252
-        VITE_BOOKING_API_URL: http://13.233.66.252
+        VITE_LOGIN_API_URL: http://login/
+        VITE_PAYMENT_API_URL: http://payment/
+        VITE_BOOKING_API_URL: http://booking/
         VITE_BOOKING_PORT: 3001
         VITE_PAYMENT_PORT: 5070
         VITE_LOGIN_PORT: 5050
     ports:
-      - "80:80"  
+      - "80"  
     networks:
       - mern_network
     environment:
-      VITE_LOGIN_API_URL: http://13.233.66.252
-      VITE_PAYMENT_API_URL: http://13.233.66.252
-      VITE_BOOKING_API_URL: http://13.233.66.252
+      VITE_LOGIN_API_URL: http://login/
+      VITE_PAYMENT_API_URL: http://payment/
+      VITE_BOOKING_API_URL: http://booking/
       VITE_BOOKING_PORT: 3001
       VITE_PAYMENT_PORT: 5070
       VITE_LOGIN_PORT: 5050
