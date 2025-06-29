@@ -86,20 +86,20 @@ pipeline {
                 }
             }
         }
-        stage('pulling main production branch') {
+        stage('pulling prod production branch') {
             steps {
                 dir('TravelEase') {
                     git branch: 'dev-prod', credentialsId: 'bhavesh', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 }
             }
         }
-        stage('Updating main production branch') {
+        stage('Updating dev-prod production branch') {
             steps {
                 sh 'mkdir -p ./TravelEase/payment'
                 sh 'rsync -av --exclude=".git" ./payment/ ./TravelEase/payment/'
             }
         }
-        stage('push code to main production branch') {
+        stage('push code to prod production branch') {
             steps {
                 dir('TravelEase') {
             withCredentials([usernamePassword(credentialsId: 'bhavesh', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
