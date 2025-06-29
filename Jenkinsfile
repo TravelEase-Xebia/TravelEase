@@ -51,7 +51,7 @@ pipeline {
         }
         stage('Starting Services') {
             steps {
-                  sh "docker compose up -d"    
+                  sh "docker compose up"    
             }
         }
         stage('Trivy Image Scan') {
