@@ -37,7 +37,7 @@ pipeline {
         stage('Git Checkout') {
             steps {
                 dir('TravelEase') {
-                    git branch: 'frontend', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
+                    git branch: 'dev-prod', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 }
             }
         }
