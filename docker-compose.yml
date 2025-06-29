@@ -17,7 +17,7 @@ services:
       - mern_network
     environment:
       MONGO_URI: mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0 
-      PORT: PORT
+      PORT: 5070
       
   login:
     build: ./login
