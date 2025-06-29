@@ -39,7 +39,14 @@ pipeline {
         }
         stage('Removing old Images') {
             steps {
-                  sh "docker rmi -f \$(docker images -aq)"   
+                  sh '''
+            echo "Stopping and removing all containers..."
+            docker ps -aq | xargs -r docker stop
+            docker ps -aq | xargs -r docker rm
+
+            echo "Removing all Docker images..."
+            docker images -aq | xargs -r docker rmi -f
+        '''   
             }
         }
         stage('Starting Services') {
