@@ -37,7 +37,7 @@ pipeline {
         }
         stage('Removing old Images') {
             steps {
-                  sh "docker rmi -f $(docker images -aq)"   
+                  sh "docker rmi -f \$(docker images -aq)"   
             }
         }
         stage('Starting Services') {
@@ -67,6 +67,11 @@ pipeline {
                         sh 'aws s3 cp dev-image-login.html s3://dev-travel-ease-trivy-report/'
                         sh 'aws s3 cp fs-dev-prod.html s3://dev-travel-ease-trivy-report/'
                     }
+            }
+        }
+        stage('Branch is ready for production') {
+            steps {
+                    echo 'Hello World'
             }
         }
     }
