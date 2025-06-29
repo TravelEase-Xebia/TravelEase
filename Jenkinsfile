@@ -88,7 +88,7 @@ pipeline {
         }
         stage('pulling main production branch') {
             steps {
-                dir('travelEaseProdTest') {
+                dir('TravelEase') {
                     git branch: 'dev-prod', credentialsId: 'bhavesh', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 }
             }
@@ -101,7 +101,7 @@ pipeline {
         }
         stage('push code to main production branch') {
             steps {
-                dir('travelEaseProdTest') {
+                dir('TravelEase') {
             withCredentials([usernamePassword(credentialsId: 'bhavesh', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
                 sh '''
                     git config user.name "$GIT_USER"
