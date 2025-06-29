@@ -1,5 +1,7 @@
 pipeline {
-    agent { label: "dev-deploy" }
+    agent {
+        label 'dev-deploy'
+    }
     tools{
         nodejs 'nodejs23'
     }
