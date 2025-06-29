@@ -86,12 +86,14 @@ pipeline {
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'aws-cred'
                 ]]) {
+                    dir('TravelEase') {
                     sh 'aws s3 cp dev-image-frontend.html s3://dev-travel-ease-trivy-report/'
                     sh 'aws s3 cp dev-image-booking.html s3://dev-travel-ease-trivy-report/'
                     sh 'aws s3 cp dev-image-payment.html s3://dev-travel-ease-trivy-report/'
                     sh 'aws s3 cp dev-image-nginx-proxy.html s3://dev-travel-ease-trivy-report/'
                     sh 'aws s3 cp dev-image-login.html s3://dev-travel-ease-trivy-report/'
                     sh 'aws s3 cp fs-dev-prod.html s3://dev-travel-ease-trivy-report/'
+                    }
                 }
             }
         }
