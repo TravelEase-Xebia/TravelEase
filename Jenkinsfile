@@ -65,7 +65,7 @@ pipeline {
         stage('Starting Services') {
             steps {
                 dir('TravelEase') {
-                    sh "docker compose up --build"
+                    sh "docker compose up --build -d"
                 }
             }
         }
