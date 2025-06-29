@@ -12,29 +12,11 @@ pipeline {
         AWS_REGION = 'ap-south-1'
     }
 
-    stages {
-        stage('Git Checkout') {
-            steps {
-                    git branch: 'frontend', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
-            }
-        }
-        stage('Trivy FS Scan') {
-            steps {
-                sh 'trivy fs --format table -o fs-dev-prod.html .'
-            }
-        }
-        stage('SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('sonar-server') {
-                        sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=TravelEase-dev-prod -Dsonar.projectKey=TravelEase-dev-prod \
-                              -Dsonar.sources=.
-                           '''
-                }
-            }
-        }
         stage('Removing old Containers') {
             steps {
+                dir('TravelEase') {
                   sh "docker compose down"
+                }
             }
         }
         stage('Removing old Images') {
@@ -49,9 +31,37 @@ pipeline {
         '''   
             }
         }
+        stages {
+        stage('Git Checkout') {
+            steps {
+                dir('TravelEase') {
+                    git branch: 'frontend', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
+                }
+            }
+        }
+        stage('Trivy FS Scan') {
+            steps {
+                dir('TravelEase') {
+                sh 'trivy fs --format table -o fs-dev-prod.html .'
+                }
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                withSonarQubeEnv('sonar-server') {
+                    dir('TravelEase') {
+                        sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=TravelEase-dev-prod -Dsonar.projectKey=TravelEase-dev-prod \
+                              -Dsonar.sources=.
+                           '''
+                    }
+                }
+            }
+        }
         stage('Starting Services') {
             steps {
-                  sh "docker compose up --build"    
+                dir('TravelEase') {
+                  sh "docker compose up --build" 
+                }
             }
         }
         stage('Trivy Image Scan') {
@@ -78,7 +88,7 @@ pipeline {
                     }
             }
         }
-        stage('Branch is ready for production') {
+        stage('Branch update') {
             steps {
                     echo 'Hello World'
             }
