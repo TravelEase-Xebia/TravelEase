@@ -6,6 +6,7 @@ metadata:
   labels:
     travelease.io/name: travelease-booking
     app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/component: booking
     app.kubernetes.io/name: travelease-booking
     app.kubernetes.io/part-of: travelease-deploy
 spec: 
