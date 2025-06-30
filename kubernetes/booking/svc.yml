@@ -7,6 +7,7 @@ metadata:
     travelease.io/name: travelease-booking
     app.kubernetes.io/instance: travelease-deploy
     app.kubernetes.io/name: travelease-booking
+    app.kubernetes.io/part-of: travelease-deploy
 spec: 
   type: ClusterIP
   ports: 
