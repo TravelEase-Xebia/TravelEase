@@ -78,7 +78,7 @@ spec:
             - name: VITE_BOOKING_API_URL
               value: "/api/booking"   
 ---
-apiVersion: apps/v1
+apiVersion: app/v1
 kind: Deployment
 metadata:
   name: travelease-login
@@ -118,7 +118,7 @@ spec:
             - name: JWT_SECRET
               value: "y2cjouqyr"
 ---
-apiVersion: apps/v1
+apiVersion: app/v1
 kind: Deployment
 metadata:
   name: travelease-payment
