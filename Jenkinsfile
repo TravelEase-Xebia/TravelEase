@@ -8,6 +8,11 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace'){
+            steps{
+                cleanWs()
+            }
+        }
         stage('Git Checkout') {
             steps {
                 dir('nginx-proxy') {
@@ -93,6 +98,11 @@ pipeline {
             }
         }
             }
+        }
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
