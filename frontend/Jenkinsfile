@@ -118,7 +118,7 @@ pipeline {
                 sh 'rsync -av --exclude=".git" --exclude="dist" ./frontend/ ./TravelEase/frontend/'
             }
         }
-        stage('push code to main production branch') {
+        stage('push code to dev-prod production branch') {
             steps {
                 dir('TravelEase') {
             withCredentials([usernamePassword(credentialsId: 'travel', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
@@ -127,7 +127,7 @@ pipeline {
                     git config user.email "$GIT_USER@users.noreply.github.com"
                     
                     git add .
-                    git commit -m "CI: Updated frontend into main production branch" || echo "No changes to commit"
+                    git commit -m "CI: Updated frontend into dev-prod production branch" || echo "No changes to commit"
                     git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:dev-prod
                 '''
             }
