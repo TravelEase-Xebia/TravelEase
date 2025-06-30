@@ -1,0 +1,36 @@
+---
+appVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travelease-booking
+  labels:
+  travelease.io/name: travelease-booking
+  app.kubernetes.io/instance: travelease-deploy
+  app.kubernetes.io/name: travelease-booking
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      travelease.io/name: travelease-booking
+  template:
+    metadata:
+      labels:
+        travelease.io/name: travelease-booking  
+        app.kubernetes.io/instance: travelease-deploy
+        app.kubernetes.io/name: travelease-booking
+
+    spec:
+      serviceAccountName: travelease-deploy   
+      containers:
+        - name: travelease-booking
+          image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/booking:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3001
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            - name: PORT
+              value: "3001"
+          
