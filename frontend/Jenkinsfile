@@ -12,6 +12,11 @@ pipeline {
     }
 
     stages {
+        stage('Clean Workspace'){
+            steps{
+                cleanWs()
+            }
+        }
         stage('Git Checkout') {
             steps {
                 dir('frontend') {
@@ -128,6 +133,11 @@ pipeline {
             }
         }
             }
+        }
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
