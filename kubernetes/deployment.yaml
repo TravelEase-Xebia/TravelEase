@@ -1,5 +1,5 @@
 ---
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: travelease-booking
@@ -38,7 +38,7 @@ spec:
             - name: PORT
               value: "3001"
 ---
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: travelease-frontend
@@ -78,7 +78,7 @@ spec:
             - name: VITE_BOOKING_API_URL
               value: "/api/booking"   
 ---
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: travelease-login
@@ -118,7 +118,7 @@ spec:
             - name: JWT_SECRET
               value: "y2cjouqyr"
 ---
-apiVersion: app/v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: travelease-payment
