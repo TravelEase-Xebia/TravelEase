@@ -6,7 +6,9 @@ metadata:
   labels:
   travelease.io/name: travelease-booking
   app.kubernetes.io/instance: travelease-deploy
+  app.kubernetes.io/component: booking
   app.kubernetes.io/name: travelease-booking
+  app.kubernetes.io/part-of: travelease-deploy
 spec:
   replicas: 2
   revisionHistoryLimit: 5
@@ -18,6 +20,7 @@ spec:
       labels:
         travelease.io/name: travelease-booking  
         app.kubernetes.io/instance: travelease-deploy
+        app.kubernetes.io/component: booking
         app.kubernetes.io/name: travelease-booking
 
     spec:
@@ -28,6 +31,7 @@ spec:
           imagePullPolicy: Always
           ports:
             - containerPort: 3001
+              name: service
           env:
             - name: MONGO_URI
               value: "mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
