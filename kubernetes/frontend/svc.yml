@@ -6,12 +6,14 @@ metadata:
   labels:
     travelease.io/name: travelease-frontend
     app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/component: frontend
     app.kubernetes.io/name: travelease-frontend
+    app.kubernetes.io/part-of: travelease-deploy
 spec: 
   type: ClusterIP
   ports: 
-    - protocol: TCP
-      port: 80
+    - port: 80
       targetPort: 80 
+      name: tcp-service
   selector:
     travelease.io/name: travelease-frontend  
