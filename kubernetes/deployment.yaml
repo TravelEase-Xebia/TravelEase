@@ -4,11 +4,11 @@ kind: Deployment
 metadata:
   name: travelease-booking
   labels:
-  travelease.io/name: travelease-booking
-  app.kubernetes.io/instance: travelease-deploy
-  app.kubernetes.io/component: booking
-  app.kubernetes.io/name: travelease-booking
-  app.kubernetes.io/part-of: travelease-deploy
+    travelease.io/name: travelease-booking
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/component: booking
+    app.kubernetes.io/name: travelease-booking
+    app.kubernetes.io/part-of: travelease-deploy
 spec:
   replicas: 2
   revisionHistoryLimit: 5
@@ -43,10 +43,10 @@ kind: Deployment
 metadata:
   name: travelease-frontend
   labels:
-  travelease.io/name: travelease-frontend
-  app.kubernetes.io/instance: travelease-deploy
-  app.kubernetes.io/name: travelease-frontend
-  app.kubernetes.io/part-of: travelease-deploy
+    travelease.io/name: travelease-frontend
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-frontend
+    app.kubernetes.io/part-of: travelease-deploy
 spec:
   replicas: 3
   revisionHistoryLimit: 5
@@ -83,10 +83,10 @@ kind: Deployment
 metadata:
   name: travelease-login
   labels:
-  travelease.io/name: travelease-login
-  app.kubernetes.io/instance: travelease-deploy
-  app.kubernetes.io/name: travelease-login
-  app.kubernetes.io/part-of: travelease-deploy
+    travelease.io/name: travelease-login
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-login
+    app.kubernetes.io/part-of: travelease-deploy
 spec:
   replicas: 2
   revisionHistoryLimit: 5
@@ -123,10 +123,10 @@ kind: Deployment
 metadata:
   name: travelease-payment
   labels:
-  travelease.io/name: travelease-payment
-  app.kubernetes.io/instance: travelease-deploy
-  app.kubernetes.io/name: travelease-payment
-  app.kubernetes.io/part-of: travelease-deploy
+    travelease.io/name: travelease-payment
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-payment
+    app.kubernetes.io/part-of: travelease-deploy
 spec:
   replicas: 2
   revisionHistoryLimit: 5
