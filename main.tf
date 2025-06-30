@@ -6,17 +6,17 @@ terraform {
     }
   }
   backend "s3" {
-    bucket         = "eks-state-bucket-travelease-s3"
+    bucket         = "eks-state-bucket-demo-otel-s3"
     key            = "terraform.tfstate"
     region         = "ap-south-1"
-    dynamodb_table = "terraform-eks-state-lock-travelease"
+    dynamodb_table = "terraform-eks-state-lock-demo-otel"
     encrypt = true
   }
 }
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "ap-south-1"
+  region = "us-east-1"
 }
 
 module "vpc" {
