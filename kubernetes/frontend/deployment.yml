@@ -1,0 +1,33 @@
+appVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/frontend:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: VITE_LOGIN_API_URL
+              value: "/api/login"
+            - name: VITE_PAYMENT_API_URL
+              value: "/api/payment"
+            - name: VITE_BOOKING_API_URL
+              value: "/api/booking"
+          resources: 
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
