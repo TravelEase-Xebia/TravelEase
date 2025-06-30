@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    // tools{
-    //     nodejs 'nodejs23'
-    // }
     environment{
         ECR_REGISTERY='794038217891.dkr.ecr.ap-south-1.amazonaws.com'
         ECR_REPO = 'travelease/nginx-proxy'
@@ -23,22 +20,6 @@ pipeline {
                 echo 'Hello World'
             }
         }
-        // stage('Trivy FS Scan') {
-        //     steps {
-        //         sh 'trivy fs --format table -o fs-nginx-proxy.html .'
-        //     }
-        // }
-        // stage('SonarQube Analysis') {
-        //     steps {
-        //         withSonarQubeEnv('sonar-server') {
-        //             dir('payment') {
-        //                 sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=TravelEase-payment -Dsonar.projectKey=TravelEase-payment \
-        //                       -Dsonar.sources=.
-        //                    '''
-        //             }
-        //         }
-        //     }
-        // }
         stage('Build Image') {
             steps {
                 dir('nginx-proxy') {
