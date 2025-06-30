@@ -1,107 +1,63 @@
 pipeline {
-    agent {
-        label 'dev-deploy'
-    }
-    tools {
+    agent any
+    tools{
         nodejs 'nodejs23'
     }
-    environment {
-        SCANNER_HOME = tool 'sonar-scanner'
-        ECR_REPO = 'travelease'
+    environment{
+        SCANNER_HOME=tool 'sonar-scanner'
+        ECR_REGISTERY='794038217891.dkr.ecr.ap-south-1.amazonaws.com'
+        ECR_REPO = 'travelease/frontend'
         AWS_CREDENTIALS_ID = 'aws-cred'
         AWS_REGION = 'ap-south-1'
     }
 
     stages {
-        stage('Removing old Containers') {
-            steps {
-                dir('TravelEase') {
-                    sh "docker compose down"
-                }
+        stage('Clean Workspace'){
+            steps{
+                cleanWs()
             }
         }
-
-        stage('Removing old Images') {
+        stage('Git Checkout dev-prod') {
             steps {
-                sh '''
-                    echo "Stopping and removing all containers..."
-                    docker ps -aq | xargs -r docker stop
-                    docker ps -aq | xargs -r docker rm
-
-                    echo "Removing all Docker images..."
-                    docker images -aq | xargs -r docker rmi -f
-                '''
-            }
-        }
-
-        stage('Git Checkout') {
-            steps {
-                dir('TravelEase') {
+                dir('dev-prod') {
                     git branch: 'dev-prod', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 }
             }
         }
-
-        stage('Trivy FS Scan') {
+        stage('Git Checkout main') {
             steps {
-                dir('TravelEase') {
-                    sh 'trivy fs --format table -o fs-dev-prod.html .'
+                dir('main') {
+                    git branch: 'main', credentialsId: 'travel', url: 'https://github.com/TravelEase-Xebia/TravelEase.git'
                 }
             }
         }
 
-        stage('SonarQube Analysis') {
+        stage('Updating dev production branch') {
             steps {
-                withSonarQubeEnv('sonar-server') {
-                    dir('TravelEase') {
-                        sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=TravelEase-dev-prod -Dsonar.projectKey=TravelEase-dev-prod \
-                              -Dsonar.sources=.
-                           '''
-                    }
-                }
+                sh 'mkdir -p ./TravelEase/frontend'
+                sh 'rsync -av --exclude=".git" --exclude="Jenkinsfile" --exclude="README.*" ./dev-prod/ ./main/'
             }
         }
-
-        stage('Starting Services') {
+        stage('push code to main production branch') {
             steps {
-                dir('TravelEase') {
-                    sh "docker compose up --build -d"
-                }
+                dir('main') {
+            withCredentials([usernamePassword(credentialsId: 'travel', usernameVariable: 'GIT_USER', passwordVariable: 'GIT_TOKEN')]) {
+                sh '''
+                    git config user.name "$GIT_USER"
+                    git config user.email "$GIT_USER@users.noreply.github.com"
+                    
+                    git add .
+                    git commit -m "CI: Updated into main production branch" || echo "No changes to commit"
+                    git push https://$GIT_USER:$GIT_TOKEN@github.com/TravelEase-Xebia/TravelEase.git HEAD:main
+                '''
             }
         }
-
-        stage('Trivy Image Scan') {
-            steps {
-                sh "trivy image --format table -o dev-image-frontend.html ${ECR_REPO}-frontend:latest"
-                sh "trivy image --format table -o dev-image-payment.html ${ECR_REPO}-payment:latest"
-                sh "trivy image --format table -o dev-image-booking.html ${ECR_REPO}-booking:latest"
-                sh "trivy image --format table -o dev-image-nginx-proxy.html ${ECR_REPO}-nginx-proxy:latest"
-                sh "trivy image --format table -o dev-image-login.html ${ECR_REPO}-login:latest"
             }
         }
-
-        stage('Upload Trivy scan reports to S3') {
-            steps {
-                withCredentials([[ 
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'aws-cred'
-                ]]) {
-                    dir('TravelEase') {
-                    sh 'aws s3 cp fs-dev-prod.html s3://dev-travel-ease-trivy-report/'
-                    }
-                    sh 'aws s3 cp dev-image-frontend.html s3://dev-travel-ease-trivy-report/'
-                    sh 'aws s3 cp dev-image-booking.html s3://dev-travel-ease-trivy-report/'
-                    sh 'aws s3 cp dev-image-payment.html s3://dev-travel-ease-trivy-report/'
-                    sh 'aws s3 cp dev-image-nginx-proxy.html s3://dev-travel-ease-trivy-report/'
-                    sh 'aws s3 cp dev-image-login.html s3://dev-travel-ease-trivy-report/'
-                }
-            }
-        }
-
-        stage('Branch update') {
-            steps {
-                echo 'Hello World'
-            }
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
