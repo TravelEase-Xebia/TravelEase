@@ -19,21 +19,21 @@ spec:
                 name: travelease-frontend-proxy
                 port:
                   number: 80
-          - path: "/api/payment"
+          - path: "/api/payment/"
             pathType: Prefix
             backend:
               service:
                 name: travelease-payment
                 port:
                   number: 5070
-          - path: "/api/booking"
+          - path: "/api/booking/"
             pathType: Prefix
             backend:
               service:
                 name: travelease-booking
                 port:
                   number: 3001
-          - path: "/api/login"
+          - path: "/api/login/"
             pathType: Prefix
             backend:
               service:
