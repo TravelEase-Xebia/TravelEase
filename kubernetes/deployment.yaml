@@ -200,7 +200,7 @@ spec:
               name: service
           env:
             - name: VITE_LOGIN_API_URL
-              value: "/api/login"
+              value: "/auth/login"
             - name: VITE_PAYMENT_API_URL
               value: "/api/payment"
             - name: VITE_BOOKING_API_URL
