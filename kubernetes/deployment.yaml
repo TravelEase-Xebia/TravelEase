@@ -99,10 +99,10 @@ kind: Deployment
 metadata:
   name: travelease-frontend-proxy
   labels:
-  travelease.io/name: travelease-frontend-proxy
-  app.kubernetes.io/instance: travelease-deploy
-  app.kubernetes.io/name: travelease-frontend-proxy
-  app.kubernetes.io/part-of: travelease-deploy
+    travelease.io/name: travelease-frontend-proxy
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-frontend-proxy
+    app.kubernetes.io/part-of: travelease-deploy
 spec:
   replicas: 3
   revisionHistoryLimit: 5
