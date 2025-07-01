@@ -47,3 +47,10 @@ spec:
                 name: travelease-login
                 port:
                   number: 5050
+          - path: "/api/searchflights/"
+            pathType: Prefix
+            backend:
+              service:
+                name: travelease-booking
+                port:
+                  number: 3001
