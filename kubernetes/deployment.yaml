@@ -112,7 +112,7 @@ spec:
   template:
     metadata:
       labels:
-        travelease.io/name: travelease-frontend  
+        travelease.io/name: travelease-frontend-proxy  
         app.kubernetes.io/instance: travelease-deploy
         app.kubernetes.io/component: frontendproxy
         app.kubernetes.io/name: travelease-frontend-proxy
