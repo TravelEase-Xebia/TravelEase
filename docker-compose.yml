@@ -37,7 +37,7 @@ services:
     networks:
       - mern_network
     depends_on:
-      - frontend
+      - travelease-frontend
 
   travelease-frontend:
     build:
@@ -55,9 +55,9 @@ services:
       VITE_PAYMENT_API_URL: /api/payment
       VITE_BOOKING_API_URL: /api/booking
     depends_on:
-      - booking
-      - payment
-      - login
+      - travelease-booking
+      - travelease-payment
+      - travelease-login
 
 networks:
   mern_network:
