@@ -11,13 +11,7 @@ spec:
     - host: example.com
       http:
         paths:
-          - path: "/"
-            pathType: Prefix
-            backend:
-              service:
-                name: travelease-frontend
-                port:
-                  number: 80
+          # MOST SPECIFIC PATHS FIRST
           - path: "/api/login"
             pathType: Prefix
             backend:
@@ -25,6 +19,7 @@ spec:
                 name: travelease-login
                 port:
                   number: 5050
+
           - path: "/api/payment"
             pathType: Prefix
             backend:
@@ -32,6 +27,7 @@ spec:
                 name: travelease-payment
                 port:
                   number: 5070
+
           - path: "/api/booking"
             pathType: Prefix
             backend:
@@ -39,3 +35,12 @@ spec:
                 name: travelease-booking
                 port:
                   number: 3001
+
+          # LEAST SPECIFIC PATH LAST
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: travelease-frontend
+                port:
+                  number: 80
