@@ -161,7 +161,7 @@ spec:
             - containerPort: 3001
               name: service
           env:
-            - name: MONGO_URI
+            - name: MONGO_URL
               value: "mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
             - name: PORT
               value: "3001"
