@@ -9,7 +9,7 @@ metadata:
 spec:
   ingressClassName: alb
   rules:
-    - host: www.travel-ease.xyz
+    - host: example.com
       http:
         paths:
           - path: "/"
