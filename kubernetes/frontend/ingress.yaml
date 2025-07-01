@@ -16,6 +16,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: travelease-frontend
+                name: travelease-frontend-proxy
                 port:
                   number: 80
