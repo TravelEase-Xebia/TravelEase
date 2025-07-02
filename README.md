@@ -20,17 +20,6 @@ It allows users to **browse available flights, book their preferred flight**, an
 Create a `.env` file in the root of the service directory:
 
 ---
-## 📁 Directory Structure
-
-/models/ # Mongoose schemas
-/public/ # Frontend HTML/CSS files
-.env # Environment variables (not pushed to repo)
-/db.js # MongoDB connection setup
-/server.js # Express server
-/package.json # Project dependencies
-
-
----
 
 ## 📡 API Endpoints
 
