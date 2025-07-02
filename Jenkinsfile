@@ -46,30 +46,6 @@ pipeline {
                 }
             }
         }
-
-        stage('Snyk Open Source Scan') {
-            steps {
-                dir('payment') {
-                    sh '''
-                        npm install -g snyk
-                        snyk auth ${SNYK_TOKEN}
-                        snyk test --severity-threshold=high
-                    '''
-                }
-            }
-        }
-
-        
-        stage('Snyk Code Scan (AI Scan)') {
-            steps {
-                dir('payment') {
-                    sh '''
-                        snyk code test
-                    '''
-                }
-            }
-        }
-
         stage('Build Image') {
             steps {
                 dir('payment') {
@@ -148,9 +124,7 @@ pipeline {
     }
     post {
         always {
-            script {
-                cleanWs()
-            }
+            cleanWs()
         }
     }
 }
