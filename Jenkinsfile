@@ -62,11 +62,13 @@ pipeline {
             stage('Snyk Code Scan (AI)') {
     steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-            withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')]) {
+            withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN', $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'bhavesh-aws')]) {
                 dir('payment') {
                     sh """
                         snyk auth $SNYK_TOKEN
                         snyk code test > snyk-payment.txt
+                         aws s3 cp snyk-payment.txt s3://travel-ease-snyk-report-b/
                     """
                 }
             }
