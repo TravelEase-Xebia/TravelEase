@@ -53,7 +53,7 @@ pipeline {
                 dir('payment') {
                     snykSecurity(
                         snykInstallation: 'snyk@travelease',
-                        snykTokenId: 'snyk-token',
+                        snykTokenId: 'travelease_snyk',
                         failOnIssues: false
                     )
                 }
