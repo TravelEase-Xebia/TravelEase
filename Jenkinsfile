@@ -49,14 +49,15 @@ pipeline {
 
         stage('Snyk Open Source Scan') {
             steps {
-                snykSecurity(
-                snykInstallation: 'snyk@travelease',
-                snykTokenId: 'travelease_snyk',
-                failOnIssues: true
-                )
+                dir('payment') {
+                    snykSecurity(
+                    snykInstallation: 'SnykCLI',
+                    snykTokenId: 'snyk-token-id',
+                    failOnIssues: true
+                    )
+                }
             }
         }
-
         stage('Build Image') {
             steps {
                 dir('payment') {
