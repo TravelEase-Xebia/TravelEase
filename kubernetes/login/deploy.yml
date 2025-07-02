@@ -4,10 +4,10 @@ kind: Deployment
 metadata:
   name: travelease-login
   labels:
-  travelease.io/name: travelease-login
-  app.kubernetes.io/instance: travelease-deploy
-  app.kubernetes.io/name: travelease-login
-  app.kubernetes.io/part-of: travelease-deploy
+    travelease.io/name: travelease-login
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-login
+    app.kubernetes.io/part-of: travelease-deploy
 spec:
   replicas: 2
   revisionHistoryLimit: 5
@@ -27,7 +27,7 @@ spec:
       containers:
         - name: travelease-login
           image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/login:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5050
               name: service

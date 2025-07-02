@@ -4,10 +4,10 @@ kind: Deployment
 metadata:
   name: travelease-frontend
   labels:
-  travelease.io/name: travelease-frontend
-  app.kubernetes.io/instance: travelease-deploy
-  app.kubernetes.io/name: travelease-frontend
-  app.kubernetes.io/part-of: travelease-deploy
+    travelease.io/name: travelease-frontend
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-frontend
+    app.kubernetes.io/part-of: travelease-deploy
 spec:
   replicas: 3
   revisionHistoryLimit: 5
@@ -27,7 +27,7 @@ spec:
       containers:
         - name: travelease-frontend
           image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/frontend:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
               name: service

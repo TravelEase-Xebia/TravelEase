@@ -2,63 +2,6 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: travelease-booking
-  labels:
-    travelease.io/name: travelease-booking
-    app.kubernetes.io/instance: travelease-deploy
-    app.kubernetes.io/component: booking
-    app.kubernetes.io/name: travelease-booking
-    app.kubernetes.io/part-of: travelease-deploy
-spec: 
-  type: ClusterIP
-  ports: 
-    - protocol: TCP
-      port: 3001
-      targetPort: 3001 
-  selector:
-    travelease.io/name: travelease-booking  
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: travelease-frontend
-  labels:
-    travelease.io/name: travelease-frontend
-    app.kubernetes.io/instance: travelease-deploy
-    app.kubernetes.io/component: frontend
-    app.kubernetes.io/name: travelease-frontend
-    app.kubernetes.io/part-of: travelease-deploy
-spec: 
-  type: ClusterIP
-  ports: 
-    - port: 80
-      targetPort: 80 
-      name: tcp-service
-  selector:
-    travelease.io/name: travelease-frontend  
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: travelease-login
-  labels:
-    travelease.io/name: travelease-login
-    app.kubernetes.io/instance: travelease-deploy
-    app.kubernetes.io/component: login
-    app.kubernetes.io/name: travelease-login
-    app.kubernetes.io/part-of: travelease-deploy
-spec: 
-  type: ClusterIP
-  ports: 
-    - protocol: TCP
-      port: 5050
-      targetPort: 5050 
-  selector:
-    travelease.io/name: travelease-login  
----
-apiVersion: v1
-kind: Service
-metadata:
   name: travelease-payment
   labels:
     travelease.io/name: travelease-payment
@@ -74,6 +17,7 @@ spec:
       targetPort: 5070 
   selector:
     travelease.io/name: travelease-payment  
+
 ---
 apiVersion: v1
 kind: Service
@@ -93,6 +37,106 @@ spec:
       name: tcp-service
   selector:
     travelease.io/name: travelease-frontend-proxy  
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: travelease-login
+  labels:
+    travelease.io/name: travelease-login
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/component: login
+    app.kubernetes.io/name: travelease-login
+    app.kubernetes.io/part-of: travelease-deploy
+spec: 
+  type: ClusterIP
+  ports: 
+    - protocol: TCP
+      port: 5050
+      targetPort: 5050 
+  selector:
+    travelease.io/name: travelease-login  
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: travelease-frontend
+  labels:
+    travelease.io/name: travelease-frontend
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/component: frontend
+    app.kubernetes.io/name: travelease-frontend
+    app.kubernetes.io/part-of: travelease-deploy
+spec: 
+  type: ClusterIP
+  ports: 
+    - port: 80
+      targetPort: 80 
+      name: tcp-service
+  selector:
+    travelease.io/name: travelease-frontend  
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: travelease-booking
+  labels:
+    travelease.io/name: travelease-booking
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/component: booking
+    app.kubernetes.io/name: travelease-booking
+    app.kubernetes.io/part-of: travelease-deploy
+spec: 
+  type: ClusterIP
+  ports: 
+    - protocol: TCP
+      port: 3001
+      targetPort: 3001 
+  selector:
+    travelease.io/name: travelease-booking  
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travelease-payment
+  labels:
+    travelease.io/name: travelease-payment
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-payment
+    app.kubernetes.io/part-of: travelease-deploy
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      travelease.io/name: travelease-payment
+  template:
+    metadata:
+      labels:
+        travelease.io/name: travelease-payment  
+        app.kubernetes.io/instance: travelease-deploy
+        app.kubernetes.io/name: travelease-payment
+        app.kubernetes.io/component: payment
+
+    spec:
+      serviceAccountName: travelease-deploy   
+      containers:
+        - name: travelease-payment
+          image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/payment:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5070
+              name: service
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            - name: PORT
+              value: "5070"
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -112,20 +156,106 @@ spec:
   template:
     metadata:
       labels:
-        travelease.io/name: travelease-frontend-proxy  
+        travelease.io/name: travelease-frontend-proxy
         app.kubernetes.io/instance: travelease-deploy
         app.kubernetes.io/component: frontendproxy
         app.kubernetes.io/name: travelease-frontend-proxy
 
     spec:
-      serviceAccountName: travelease-deploy   
+      serviceAccountName: travelease-deploy
       containers:
         - name: travelease-frontend-proxy
           image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/nginx-proxy:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
               name: service 
+
+
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travelease-login
+  labels:
+    travelease.io/name: travelease-login
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-login
+    app.kubernetes.io/part-of: travelease-deploy
+spec:
+  replicas: 2
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      travelease.io/name: travelease-login
+  template:
+    metadata:
+      labels:
+        travelease.io/name: travelease-login  
+        app.kubernetes.io/instance: travelease-deploy
+        app.kubernetes.io/component: login
+        app.kubernetes.io/name: travelease-login
+
+    spec:
+      serviceAccountName: travelease-deploy   
+      containers:
+        - name: travelease-login
+          image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/login:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5050
+              name: service
+          env:
+            - name: MONGO_URI
+              value: "mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+            - name: PORT
+              value: "5050"
+            - name: JWT_SECRET
+              value: "y2cjouqyr"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: travelease-frontend
+  labels:
+    travelease.io/name: travelease-frontend
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-frontend
+    app.kubernetes.io/part-of: travelease-deploy
+spec:
+  replicas: 3
+  revisionHistoryLimit: 5
+  selector:
+    matchLabels:
+      travelease.io/name: travelease-frontend
+  template:
+    metadata:
+      labels:
+        travelease.io/name: travelease-frontend  
+        app.kubernetes.io/instance: travelease-deploy
+        app.kubernetes.io/component: frontendproxy
+        app.kubernetes.io/name: travelease-frontend
+
+    spec:
+      serviceAccountName: travelease-deploy   
+      containers:
+        - name: travelease-frontend
+          image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              name: service
+          env:
+            - name: VITE_LOGIN_API_URL
+              value: "/api/login"
+            - name: VITE_PAYMENT_API_URL
+              value: "/api/payment"
+            - name: VITE_BOOKING_API_URL
+              value: "/api/booking"   
+          
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -156,131 +286,13 @@ spec:
       containers:
         - name: travelease-booking
           image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/booking:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3001
               name: service
           env:
-            - name: MONGO_URI
+            - name: MONGO_URL
               value: "mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
             - name: PORT
               value: "3001"
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: travelease-frontend
-  labels:
-    travelease.io/name: travelease-frontend
-    app.kubernetes.io/instance: travelease-deploy
-    app.kubernetes.io/name: travelease-frontend
-    app.kubernetes.io/part-of: travelease-deploy
-spec:
-  replicas: 3
-  revisionHistoryLimit: 5
-  selector:
-    matchLabels:
-      travelease.io/name: travelease-frontend
-  template:
-    metadata:
-      labels:
-        travelease.io/name: travelease-frontend  
-        app.kubernetes.io/instance: travelease-deploy
-        app.kubernetes.io/component: frontendproxy
-        app.kubernetes.io/name: travelease-frontend
-
-    spec:
-      serviceAccountName: travelease-deploy   
-      containers:
-        - name: travelease-frontend
-          image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/frontend:latest
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 80
-              name: service
-          env:
-            - name: VITE_LOGIN_API_URL
-              value: "/auth/login"
-            - name: VITE_PAYMENT_API_URL
-              value: "/api/payment"
-            - name: VITE_BOOKING_API_URL
-              value: "/api/booking"   
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: travelease-login
-  labels:
-    travelease.io/name: travelease-login
-    app.kubernetes.io/instance: travelease-deploy
-    app.kubernetes.io/name: travelease-login
-    app.kubernetes.io/part-of: travelease-deploy
-spec:
-  replicas: 2
-  revisionHistoryLimit: 5
-  selector:
-    matchLabels:
-      travelease.io/name: travelease-login
-  template:
-    metadata:
-      labels:
-        travelease.io/name: travelease-login  
-        app.kubernetes.io/instance: travelease-deploy
-        app.kubernetes.io/component: login
-        app.kubernetes.io/name: travelease-login
-
-    spec:
-      serviceAccountName: travelease-deploy   
-      containers:
-        - name: travelease-login
-          image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/login:latest
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 5050
-              name: service
-          env:
-            - name: MONGO_URI
-              value: "mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-            - name: PORT
-              value: "5050"
-            - name: JWT_SECRET
-              value: "y2cjouqyr"
----
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: travelease-payment
-  labels:
-    travelease.io/name: travelease-payment
-    app.kubernetes.io/instance: travelease-deploy
-    app.kubernetes.io/name: travelease-payment
-    app.kubernetes.io/part-of: travelease-deploy
-spec:
-  replicas: 2
-  revisionHistoryLimit: 5
-  selector:
-    matchLabels:
-      travelease.io/name: travelease-payment
-  template:
-    metadata:
-      labels:
-        travelease.io/name: travelease-payment  
-        app.kubernetes.io/instance: travelease-deploy
-        app.kubernetes.io/name: travelease-payment
-        app.kubernetes.io/component: payment
-
-    spec:
-      serviceAccountName: travelease-deploy   
-      containers:
-        - name: travelease-payment
-          image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/payment:latest
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 5070
-              name: service
-          env:
-            - name: MONGO_URI
-              value: "mongodb+srv://Bhavesh:Admin123@cluster0.ig5deah.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
-            - name: PORT
-              value: "5070"
           

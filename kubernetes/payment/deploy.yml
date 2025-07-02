@@ -4,10 +4,10 @@ kind: Deployment
 metadata:
   name: travelease-payment
   labels:
-  travelease.io/name: travelease-payment
-  app.kubernetes.io/instance: travelease-deploy
-  app.kubernetes.io/name: travelease-payment
-  app.kubernetes.io/part-of: travelease-deploy
+    travelease.io/name: travelease-payment
+    app.kubernetes.io/instance: travelease-deploy
+    app.kubernetes.io/name: travelease-payment
+    app.kubernetes.io/part-of: travelease-deploy
 spec:
   replicas: 2
   revisionHistoryLimit: 5
@@ -27,7 +27,7 @@ spec:
       containers:
         - name: travelease-payment
           image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/payment:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5070
               name: service
