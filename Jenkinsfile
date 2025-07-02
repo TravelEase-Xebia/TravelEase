@@ -148,8 +148,8 @@ pipeline {
     }
     post {
         always {
-            node {
-            cleanWs()
+            script {
+                cleanWs()
             }
         }
     }
