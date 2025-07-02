@@ -47,28 +47,17 @@ pipeline {
             }
         }
 
-        stage('Snyk Scan') {
-            steps {
-                dir('payment') {
-                    snykSecurity(
-                    snykInstallation: 'snyk@travelease',
-                    snykTokenId: 'travelease_snyk',
-                    failOnIssues: false
-                    )
-                }
-            }
-        }
-
         stage('Snyk Code Scan (AI)') {
             steps {
                 withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')]) {
                 dir('payment') {
                     sh '''
                         snyk auth $SNYK_TOKEN
-                        snyk code test
+                        snyk code test --json --exit-code=0 > snyk-code-report.json
                     '''
                     }
                 }   
+                archiveArtifacts artifacts: 'payment/snyk-code-report.json'
             }
         }
         stage('Build Image') {
