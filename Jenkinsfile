@@ -10,7 +10,7 @@ pipeline {
         AWS_CREDENTIALS_ID = 'aws-cred'
         AWS_CREDENTIALS_ID2= 'bhavesh-aws'
         AWS_REGION = 'ap-south-1'
-        SNYK_TOKEN = 'travelease_snyk'
+        SNYK_TOKEN = 'snyk-token'
     }
 
     stages {
@@ -53,7 +53,7 @@ pipeline {
                 dir('payment') {
                     snykSecurity(
                         snykInstallation: 'snyk@travelease',
-                        snykTokenId: 'travelease_snyk',
+                        snykTokenId: 'snyk-token',
                         failOnIssues: false
                     )
                 }
@@ -63,7 +63,7 @@ stage('Snyk Code Scan (AI)') {
     steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             withCredentials([
-                string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')
+                string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')
             ]) {
                 withCredentials([
                     [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
