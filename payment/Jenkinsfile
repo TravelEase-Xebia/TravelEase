@@ -14,11 +14,6 @@ pipeline {
     }
 
     stages {
-        stage('Clean Workspace'){
-            steps{
-                cleanWs()
-            }
-        }
         stage('Git Checkout') {
             steps {
                 dir('payment') {
@@ -166,11 +161,6 @@ stage('Upload Trivy and Snyk reports to S3') {
             }
         }
             }
-        }
-    }
-    post {
-        always {
-            cleanWs()
         }
     }
 }
