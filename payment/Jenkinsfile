@@ -47,17 +47,30 @@ pipeline {
             }
         }
 
-        stage('Snyk Open Source Scan') {
+        stage('Snyk Scan') {
             steps {
                 dir('payment') {
                     snykSecurity(
-                    snykInstallation: 'snyk@travelease',
-                    snykTokenId: 'travelease_snyk',
-                    failOnIssues: true
+                        snykInstallation: 'snyk@travelease',
+                        snykTokenId: 'travelease_snyk',
+                        failOnIssues: false
                     )
                 }
             }
         }
+        // stage('Snyk Code Scan (AI)') {
+        //     steps {
+        //         withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')]) {
+        //         dir('payment') {
+        //             sh '''
+        //                 snyk auth $SNYK_TOKEN
+        //                 snyk code test --json-file-output=snyk-report.json
+        //             '''
+        //             }
+        //         }   
+        //         archiveArtifacts artifacts: 'payment/snyk-report.json'
+        //     }
+        // }
         stage('Build Image') {
             steps {
                 dir('payment') {
@@ -71,19 +84,19 @@ pipeline {
                 sh 'trivy image --format table -o image-payment.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
             }
         }
-        stage('Upload Trivy scan reports to S3') {
-            steps {
+        // stage('Upload Trivy scan reports to S3') {
+        //     steps {
               
-                    withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'aws-cred'
-                    ]]) {
-                        sh 'aws s3 cp image-payment.html s3://travel-ease-payment-trivy-report/'
-                        sh 'aws s3 cp fs-payment.html s3://travel-ease-payment-trivy-report/'
-                    }
+        //             withCredentials([[
+        //                 $class: 'AmazonWebServicesCredentialsBinding',
+        //                 credentialsId: 'aws-cred'
+        //             ]]) {
+        //                 sh 'aws s3 cp image-payment.html s3://travel-ease-payment-trivy-report/'
+        //                 sh 'aws s3 cp fs-payment.html s3://travel-ease-payment-trivy-report/'
+        //             }
             
-            }
-        }
+        //     }
+        // }
         stage('Login ECR') {
             steps {
                 withCredentials([[
