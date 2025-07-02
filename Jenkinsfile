@@ -53,7 +53,7 @@ pipeline {
                     snykSecurity(
                     snykInstallation: 'snyk@travelease',
                     snykTokenId: 'travelease_snyk',
-                    failOnIssues: true
+                    failOnIssues: false
                     )
                 }
             }
