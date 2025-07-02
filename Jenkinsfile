@@ -46,6 +46,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Snyk Open Source Scan') {
+            steps {
+                snykSecurity(
+                snykInstallation: 'snyk@travelease',
+                snykTokenId: 'travelease_snyk',
+                failOnIssues: true
+                )
+            }
+        }
+
         stage('Build Image') {
             steps {
                 dir('payment') {
