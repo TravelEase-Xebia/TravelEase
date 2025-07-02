@@ -9,6 +9,7 @@ pipeline {
         ECR_REPO = 'travelease/payment'
         AWS_CREDENTIALS_ID = 'aws-cred'
         AWS_REGION = 'ap-south-1'
+        SNYK_TOKEN = credentials('travelease_snyk')
     }
 
     stages {
@@ -45,6 +46,30 @@ pipeline {
                 }
             }
         }
+
+        stage('Snyk Open Source Scan') {
+            steps {
+                dir('payment') {
+                    sh '''
+                        npm install -g snyk
+                        snyk auth ${SNYK_TOKEN}
+                        snyk test --severity-threshold=high
+                    '''
+                }
+            }
+        }
+
+        
+        stage('Snyk Code Scan (AI Scan)') {
+            steps {
+                dir('payment') {
+                    sh '''
+                        snyk code test
+                    '''
+                }
+            }
+        }
+
         stage('Build Image') {
             steps {
                 dir('payment') {
