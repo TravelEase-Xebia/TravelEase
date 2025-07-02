@@ -17,15 +17,18 @@ It allows users to **browse available flights, book their preferred flight**, an
 ## 📝 Environment Variables
 
 Create a `.env` file in the root of the service directory:
-
+```
+PORT=3001
+MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>
+```
 ---
 
 ## 📡 API Endpoints
 
 | Method | Endpoint        | Description                  |
 |:--------|:----------------|:------------------------------|
-| `GET`   | `/api/bookings` | Fetch all bookings             |
-| `POST`  | `/api/bookings` | Add a new booking (JSON body)  |
+| `GET`   | `/api/searchflight` | Fetch all bookings             |
+| `POST`  | `/api/payment` | Add a new booking (JSON body)  |
 
 **Sample JSON body for booking:**
 ```json
