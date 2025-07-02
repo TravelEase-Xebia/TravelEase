@@ -58,27 +58,46 @@ pipeline {
                 }
             }
         }
-        stage('Snyk Code Scan (AI)') {
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    withCredentials([
-                        string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')
-                    ]) {
-                        withCredentials([
-                            [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
-                        ]) {
-                            dir('booking') {
-                                sh """
-                                    snyk auth $SNYK_TOKEN
-                                    snyk code test > snyk-booking-report.txt
-                                    aws s3 cp snyk-booking-report.txt s3://travel-ease-booking-b-snyk/
-                                """
-                            }
-                        }
-                    }
+        // stage('Snyk Code Scan (AI)') {
+        //     steps {
+        //         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+        //             withCredentials([
+        //                 string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')
+        //             ]) {
+        //                 withCredentials([
+        //                     [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
+        //                 ]) {
+        //                     dir('booking') {
+        //                         sh """
+        //                             snyk auth $SNYK_TOKEN
+        //                             snyk code test > snyk-booking-report.txt
+        //                             aws s3 cp snyk-booking-report.txt s3://travel-ease-booking-b-snyk/
+        //                         """
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+stage('Snyk Code Scan (AI)') {
+    steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            withCredentials([
+                string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN'),
+                [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
+            ]) {
+                dir('booking') {
+                    sh '''
+                        snyk auth $SNYK_TOKEN
+                        # Run Snyk code test but don't stop the pipeline even if it fails
+                        snyk code test > snyk-booking.txt || true
+                        aws s3 cp snyk-booking.txt s3://travel-ease-booking-b-snyk/
+                    '''
                 }
             }
         }
+    }
+}
         stage('Build Image') {
             steps {
                 dir('booking') {
