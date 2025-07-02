@@ -4,6 +4,7 @@ pipeline {
         ECR_REGISTERY='794038217891.dkr.ecr.ap-south-1.amazonaws.com'
         ECR_REPO = 'travelease/nginx-proxy'
         AWS_CREDENTIALS_ID = 'aws-cred'
+        AWS_CREDENTIALS_ID2 = 'bhavesh-cred'
         AWS_REGION = 'ap-south-1'
     }
 
@@ -20,11 +21,6 @@ pipeline {
                 }
             }
         }
-        stage('Unit Test') {
-            steps {
-                echo 'Hello World'
-            }
-        }
         stage('Build Image') {
             steps {
                 dir('nginx-proxy') {
@@ -33,23 +29,18 @@ pipeline {
                 
             }
         }
-        stage('Trivy Image Scan') {
+        stage('Upload Trivy scan reports to S3') {
             steps {
-                sh 'trivy image --format table -o image-nginx-proxy.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
+              
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'bhavesh-cred'
+                    ]]) {
+                        sh 'aws s3 cp image-nginx-proxy.html s3://travel-ease-nginx-proxy-trivy-report-b/'
+                    }
+            
             }
         }
-        // stage('Upload Trivy scan reports to S3') {
-        //     steps {
-              
-        //             withCredentials([[
-        //                 $class: 'AmazonWebServicesCredentialsBinding',
-        //                 credentialsId: 'aws-cred'
-        //             ]]) {
-        //                 sh 'aws s3 cp image-nginx-proxy.html s3://travel-ease-nginx-proxy-trivy-report/'
-        //             }
-            
-        //     }
-        // }
         stage('Login ECR') {
             steps {
                 withCredentials([[
