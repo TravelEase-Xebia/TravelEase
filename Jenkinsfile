@@ -8,7 +8,9 @@ pipeline {
         ECR_REGISTERY='794038217891.dkr.ecr.ap-south-1.amazonaws.com'
         ECR_REPO = 'travelease/login'
         AWS_CREDENTIALS_ID = 'aws-cred'
+        AWS_CREDENTIALS_ID2 = 'bhavesh-aws'
         AWS_REGION = 'ap-south-1'
+        SNYK_TOKEN = 'snyk-token'
     }
 
     stages {
@@ -45,6 +47,39 @@ pipeline {
                 }
             }
         }
+            stage('Snyk Scan') {
+            steps {
+                dir('login') {
+                    snykSecurity(
+                        snykInstallation: 'snyk@travelease',
+                        snykTokenId: 'travelease_snyk',
+                        failOnIssues: false
+                    )
+                }
+            }
+        }
+        stage('Snyk Code Scan (AI)') {
+            steps {
+                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                    withCredentials([
+                        string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')
+                    ]) {
+                        withCredentials([
+                            [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
+                        ]) {
+                            dir('login') {
+                                sh """
+                                    snyk auth $SNYK_TOKEN
+                                    snyk code test > snyk-login.txt
+                                    aws s3 cp snyk-login.txt s3://travel-ease-snyk-report-b/
+                                """
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         stage('Build Image') {
             steps {
                 dir('login') {
@@ -58,19 +93,19 @@ pipeline {
                 sh 'trivy image --format table -o image-login.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
             }
         }
-        // stage('Upload Trivy scan reports to S3') {
-        //     steps {
+        stage('Upload Trivy scan reports to S3') {
+            steps {
               
-        //             withCredentials([[
-        //                 $class: 'AmazonWebServicesCredentialsBinding',
-        //                 credentialsId: 'aws-cred'
-        //             ]]) {
-        //                 sh 'aws s3 cp image-login.html s3://travel-ease-login-trivy-report/'
-        //                 sh 'aws s3 cp fs-login.html s3://travel-ease-login-trivy-report/'
-        //             }
+                    withCredentials([[
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'bhavesh-aws'
+                    ]]) {
+                        sh 'aws s3 cp image-login.html s3://travel-ease-login-trivy-report-b/'
+                        sh 'aws s3 cp fs-login.html s3://travel-ease-login-trivy-report-b/'
+                    }
             
-        //     }
-        // }
+            }
+        }
         stage('Login ECR') {
             steps {
                 withCredentials([[
