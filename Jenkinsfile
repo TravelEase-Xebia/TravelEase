@@ -61,13 +61,15 @@ pipeline {
 
         stage('Snyk Code Scan (AI)') {
             steps {
+                withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')]) {
                 dir('payment') {
                     sh '''
-                        snyk auth ${SNYK_TOKEN}
+                        snyk auth $SNYK_TOKEN
                         snyk code test
                     '''
-                }
-            }   
+                    }
+                }   
+            }
         }
         stage('Build Image') {
             steps {
