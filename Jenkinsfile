@@ -60,18 +60,20 @@ pipeline {
         }
 stage('Snyk Code Scan (AI)') {
     steps {
-        withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')]) {
-            dir('payment') {
-                sh """
-                    which snyk
-                    snyk auth $SNYK_TOKEN
-                    snyk code test --json-file-output=snyk-report.json || echo 'Snyk scan failed'
-                """
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')]) {
+                dir('payment') {
+                    sh """
+                        snyk auth $SNYK_TOKEN
+                        snyk code test --json-file-output=snyk-code-report.json
+                    """
+                }
             }
         }
-        archiveArtifacts artifacts: 'payment/snyk-report.json', onlyIfSuccessful: true
+        archiveArtifacts artifacts: 'payment/snyk-code-report.json', allowEmptyArchive: true
     }
 }
+
 
         stage('Build Image') {
             steps {
