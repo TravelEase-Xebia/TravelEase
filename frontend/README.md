@@ -46,13 +46,13 @@ frontend/
 Getting Started
 
 1. Prerequisites
-  Make sure you have:
+Make sure you have:
 ```
   Node.js >= 16.x
   npm >= 8.x
 ```
 
-3. Installation
+2. Installation
 
 Clone the repo and install dependencies:
 ```
