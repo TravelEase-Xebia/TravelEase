@@ -38,18 +38,18 @@ pipeline {
                 sh 'trivy image --format table -o image-nginx-proxy.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
             }
         }
-        stage('Upload Trivy scan reports to S3') {
-            steps {
+        // stage('Upload Trivy scan reports to S3') {
+        //     steps {
               
-                    withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'aws-cred'
-                    ]]) {
-                        sh 'aws s3 cp image-nginx-proxy.html s3://travel-ease-nginx-proxy-trivy-report/'
-                    }
+        //             withCredentials([[
+        //                 $class: 'AmazonWebServicesCredentialsBinding',
+        //                 credentialsId: 'aws-cred'
+        //             ]]) {
+        //                 sh 'aws s3 cp image-nginx-proxy.html s3://travel-ease-nginx-proxy-trivy-report/'
+        //             }
             
-            }
-        }
+        //     }
+        // }
         stage('Login ECR') {
             steps {
                 withCredentials([[
