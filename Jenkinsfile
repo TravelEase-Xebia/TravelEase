@@ -51,8 +51,8 @@ pipeline {
             steps {
                 dir('payment') {
                     snykSecurity(
-                    snykInstallation: 'SnykCLI',
-                    snykTokenId: 'snyk-token-id',
+                    snykInstallation: 'snyk@travelease',
+                    snykTokenId: 'travelease-snyk',
                     failOnIssues: true
                     )
                 }
