@@ -9,7 +9,7 @@ pipeline {
         ECR_REPO = 'travelease/payment'
         AWS_CREDENTIALS_ID = 'aws-cred'
         AWS_REGION = 'ap-south-1'
-        SNYK_TOKEN = credentials('travelease_snyk')
+        SNYK_TOKEN = 'travelease_snyk'
     }
 
     stages {
