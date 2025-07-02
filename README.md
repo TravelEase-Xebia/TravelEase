@@ -60,3 +60,8 @@ The service will be running at:
 ```
 http://localhost:port_number/
 ```
+## 🐳 Run with Docker Compose
+If you're using Docker Compose for orchestrating multiple services:
+```
+docker compose up -d
+```
