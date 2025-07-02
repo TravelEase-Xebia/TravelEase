@@ -47,9 +47,9 @@ pipeline {
                 }
             }
         }
-                stage('Snyk Scan') {
+        stage('Snyk Scan') {
             steps {
-                dir('payment') {
+                dir('booking') {
                     snykSecurity(
                         snykInstallation: 'snyk@travelease',
                         snykTokenId: 'travelease_snyk',
