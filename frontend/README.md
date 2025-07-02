@@ -26,7 +26,7 @@ Fill in passenger details and confirm bookings
 
 📁 Folder Structure
 frontend/
-├── public/ # Static files
+├── public/ Static files
 ├── src/
 │ ├── components/ # Reusable UI components
 │ ├── pages/ # Pages like Home, Login, Signup, Booking, Payment
@@ -43,7 +43,7 @@ frontend/
 Getting Started
 
 1. Prerequisites
-Make sure you have:
+ Make sure you have:
  Node.js >= 16.x
  npm >= 8.x
 
