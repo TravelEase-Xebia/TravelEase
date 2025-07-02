@@ -71,7 +71,7 @@ pipeline {
                                 sh """
                                     snyk auth $SNYK_TOKEN
                                     snyk code test > snyk-login.txt
-                                    aws s3 cp snyk-login.txt s3://travel-ease-snyk-report-b/
+                                    aws s3 cp snyk-login.txt s3://travel-ease-snyk-login-report-b/
                                 """
                             }
                         }
