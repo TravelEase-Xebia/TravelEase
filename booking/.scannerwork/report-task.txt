@@ -2,5 +2,5 @@ projectKey=TravelEase-booking
 serverUrl=http://13.235.8.73:9000
 serverVersion=9.9.8.100196
 dashboardUrl=http://13.235.8.73:9000/dashboard?id=TravelEase-booking
-ceTaskId=AZfM3kkcVt_Jv0Ep7bB0
-ceTaskUrl=http://13.235.8.73:9000/api/ce/task?id=AZfM3kkcVt_Jv0Ep7bB0
+ceTaskId=AZfM4kysVt_Jv0Ep7bB2
+ceTaskUrl=http://13.235.8.73:9000/api/ce/task?id=AZfM4kysVt_Jv0Ep7bB2
