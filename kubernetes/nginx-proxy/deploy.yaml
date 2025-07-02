@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -26,7 +27,7 @@ spec:
       containers:
         - name: travelease-frontend-proxy
           image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/nginx-proxy:latest
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
               name: service 
