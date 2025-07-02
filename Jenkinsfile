@@ -29,18 +29,6 @@ pipeline {
                 
             }
         }
-        stage('Upload Trivy scan reports to S3') {
-            steps {
-              
-                    withCredentials([[
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'bhavesh-cred'
-                    ]]) {
-                        sh 'aws s3 cp image-nginx-proxy.html s3://travel-ease-nginx-proxy-trivy-report-b/'
-                    }
-            
-            }
-        }
         stage('Login ECR') {
             steps {
                 withCredentials([[
