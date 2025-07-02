@@ -58,6 +58,17 @@ pipeline {
                 }
             }
         }
+
+        stage('Snyk Code Scan (AI)') {
+            steps {
+                dir('payment') {
+                    sh '''
+                        snyk auth ${SNYK_TOKEN}
+                        snyk code test
+                    '''
+                }
+            }   
+        }
         stage('Build Image') {
             steps {
                 dir('payment') {
