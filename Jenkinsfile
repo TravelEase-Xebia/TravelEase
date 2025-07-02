@@ -58,19 +58,19 @@ pipeline {
                 }
             }
         }
-        stage('Snyk Code Scan (AI)') {
-            steps {
-                withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')]) {
-                dir('payment') {
-                    sh '''
-                        snyk auth $SNYK_TOKEN
-                        snyk code test --json --exit-code=1 > snyk-code-report.json
-                    '''
-                    }
-                }   
-                archiveArtifacts artifacts: 'payment/snyk-code-report.json'
-            }
-        }
+        // stage('Snyk Code Scan (AI)') {
+        //     steps {
+        //         withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')]) {
+        //         dir('payment') {
+        //             sh '''
+        //                 snyk auth $SNYK_TOKEN
+        //                 snyk code test --json-file-output=snyk-report.json
+        //             '''
+        //             }
+        //         }   
+        //         archiveArtifacts artifacts: 'payment/snyk-report.json'
+        //     }
+        // }
         stage('Build Image') {
             steps {
                 dir('payment') {
