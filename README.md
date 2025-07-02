@@ -11,7 +11,6 @@ It allows users to **browse available flights, book their preferred flight**, an
 - Save booking details to a **MongoDB Atlas database**.
 - Fetch and display all existing bookings.
 - Redirect to **Payment Microservice** after successful booking (integration-ready).
-- Clean, modern frontend interface served with the service.
 
 ---
 
