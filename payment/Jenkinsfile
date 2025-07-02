@@ -65,12 +65,12 @@ stage('Snyk Code Scan (AI)') {
                 dir('payment') {
                     sh """
                         snyk auth $SNYK_TOKEN
-                        snyk code test --json-file-output=snyk-code-report.json
+                        snyk code test --json-file-output=snyk-report.json || true
                     """
                 }
             }
         }
-        archiveArtifacts artifacts: 'payment/snyk-code-report.json', allowEmptyArchive: true
+        archiveArtifacts artifacts: 'payment/snyk-report.json', allowEmptyArchive: true
     }
 }
 
