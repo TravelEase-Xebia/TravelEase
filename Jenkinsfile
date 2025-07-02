@@ -63,6 +63,7 @@ pipeline {
             steps {
                 dir('payment') {
                     sh '''
+                        snyk auth ${SNYK_TOKEN}
                         snyk code test
                     '''
                 }
