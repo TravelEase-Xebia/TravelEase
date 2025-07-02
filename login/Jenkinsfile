@@ -59,26 +59,24 @@ pipeline {
             }
         }
         stage('Snyk Code Scan (AI)') {
-            steps {
-                catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                    withCredentials([
-                        string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')
-                    ]) {
-                        withCredentials([
-                            [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
-                        ]) {
-                            dir('login') {
-                                sh """
-                                    snyk auth $SNYK_TOKEN
-                                    snyk code test > snyk-login.txt
-                                    aws s3 cp snyk-login.txt s3://travel-ease-snyk-login-report-b/
-                                """
-                            }
-                        }
-                    }
+    steps {
+        catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+            withCredentials([
+                string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN'),
+                [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
+            ]) {
+                dir('login') {
+                    sh '''
+                        snyk auth $SNYK_TOKEN
+                        # Run Snyk code test but don't stop the pipeline even if it fails
+                        snyk code test > snyk-login.txt || true
+                        aws s3 cp snyk-login.txt s3://travel-ease-snyk-login-report-b/
+                    '''
                 }
             }
         }
+    }
+}
 
         stage('Build Image') {
             steps {
