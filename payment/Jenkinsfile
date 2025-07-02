@@ -73,7 +73,6 @@ stage('Snyk Code Scan (AI)') {
                             snyk auth $SNYK_TOKEN
                             snyk code test > snyk-payment.txt
                             aws s3 cp snyk-payment.txt s3://travel-ease-snyk-report-b/
-                            rm snyk-payment.txt
                         """
                     }
                 }
