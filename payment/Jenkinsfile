@@ -8,6 +8,7 @@ pipeline {
         ECR_REGISTERY='794038217891.dkr.ecr.ap-south-1.amazonaws.com'
         ECR_REPO = 'travelease/payment'
         AWS_CREDENTIALS_ID = 'aws-cred'
+        AWS_CREDENTIALS_ID2= 'bhavesh-aws'
         AWS_REGION = 'ap-south-1'
         SNYK_TOKEN = 'travelease_snyk'
     }
@@ -58,19 +59,18 @@ pipeline {
                 }
             }
         }
-stage('Snyk Code Scan (AI)') {
+            stage('Snyk Code Scan (AI)') {
     steps {
         catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
             withCredentials([string(credentialsId: 'travelease_snyk', variable: 'SNYK_TOKEN')]) {
                 dir('payment') {
                     sh """
                         snyk auth $SNYK_TOKEN
-                        snyk code test --json-file-output=snyk-report.json || true
+                        snyk code test > snyk-payment.txt
                     """
                 }
             }
         }
-        archiveArtifacts artifacts: 'payment/snyk-report.json', allowEmptyArchive: true
     }
 }
 
@@ -88,19 +88,28 @@ stage('Snyk Code Scan (AI)') {
                 sh 'trivy image --format table -o image-payment.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
             }
         }
-        // stage('Upload Trivy scan reports to S3') {
-        //     steps {
-              
-        //             withCredentials([[
-        //                 $class: 'AmazonWebServicesCredentialsBinding',
-        //                 credentialsId: 'aws-cred'
-        //             ]]) {
-        //                 sh 'aws s3 cp image-payment.html s3://travel-ease-payment-trivy-report/'
-        //                 sh 'aws s3 cp fs-payment.html s3://travel-ease-payment-trivy-report/'
-        //             }
-            
-        //     }
-        // }
+stage('Upload Trivy and Snyk reports to S3') {
+    steps {
+        withCredentials([[
+            $class: 'AmazonWebServicesCredentialsBinding',
+            credentialsId: 'bhavesh-aws'
+        ]]) {
+            sh 'aws s3 cp image-payment.html s3://travel-ease-payment-trivy-report-b/'
+            sh 'aws s3 cp fs-payment.html s3://travel-ease-payment-trivy-report-b/'
+            dir('payment') {
+                sh '''
+                    if [ -f snyk-payment.txt ]; then
+                        aws s3 cp snyk-payment.txt s3://travel-ease-snyk-report-b/
+                        rm snyk-payment.txt
+                    else
+                        echo "No Snyk Code report found to upload."
+                    fi
+                '''
+            }
+        }
+    }
+}
+
         stage('Login ECR') {
             steps {
                 withCredentials([[
