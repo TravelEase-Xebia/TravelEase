@@ -24,7 +24,9 @@ Fill in passenger details and confirm bookings
 | State Handling | React Context (or Hooks)  |
 | Deployment     | Docker, AWS EKS           |
 
+
 📁 Folder Structure
+```
 frontend/
 ├── public/ Static files
 ├── src/
@@ -38,44 +40,43 @@ frontend/
 ├── package.json
 ├── tailwind.config.js
 ├── vite.config.js
+```
 
 
 Getting Started
 
 1. Prerequisites
- Make sure you have:
- Node.js >= 16.x
- npm >= 8.x
+  Make sure you have:
+```
+  Node.js >= 16.x
+  npm >= 8.x
+```
 
-2. Installation
+3. Installation
 
 Clone the repo and install dependencies:
-
+```
 git clone https://github.com/TravelEase-Xebia/TravelEase.git
 cd TravelEase/frontend
 npm install
+```
 
 3. Running the App
    
 Start the development server:
-
-Copy code
+```
 npm run dev
-App will run at http://localhost:517
+App will run at http://localhost:5173
+```
 
 
 🐳 Docker Support
 To run the frontend using Docker:
-
+```
 docker build -t travelfare-frontend .
 docker run -p 5173:5173 travelfare-frontend
+```
 
 
-Contributors
-
-Bhavesh – GitHub Actions, EKS
-Samar – Prometheus, Grafana, Frontend (Login, Signup)
-Akshat – Frontend Dev, Monitoring
-Sujal – Datadog Integration
 
 
