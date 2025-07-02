@@ -64,7 +64,7 @@ pipeline {
                 dir('payment') {
                     sh '''
                         snyk auth $SNYK_TOKEN
-                        snyk code test --json --exit-code=0 > snyk-code-report.json
+                        snyk code test --json --exit-code=1 > snyk-code-report.json
                     '''
                     }
                 }   
