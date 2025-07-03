@@ -9,7 +9,9 @@ pipeline {
         SCANNER_HOME = tool 'sonar-scanner'
         ECR_REPO = 'travelease'
         AWS_CREDENTIALS_ID = 'aws-cred'
+        AWS_CREDENTIALS_ID2 = 'bhavesh-cred'
         AWS_REGION = 'ap-south-1'
+        
     }
 
     stages {
@@ -34,6 +36,7 @@ pipeline {
             }
         }
 
+
         stage('Git Checkout') {
             steps {
                 dir('TravelEase') {
@@ -42,6 +45,34 @@ pipeline {
             }
         }
 
+                stage('Snyk Code Scan (AI)') {
+                    steps { 
+                        withCredentials([
+                            [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
+                        ]) {
+                    dir('payment') {
+                        sh """
+                            aws s3 cp snyk-payment.txt s3://travel-ease-snyk-report-b/
+                        """
+                    }
+                    dir('booking') {
+                        sh """
+                            aws s3 cp snyk-booking-report.txt s3://travel-ease-booking-b-snyk/
+                        """
+                    }
+                    dir('login') {
+                        sh """
+                            aws s3 cp snyk-login.txt s3://travel-ease-snyk-login-report-b/
+                        """
+                    }
+                     dir('frontend') {
+                        sh """
+                            aws s3 cp snyk-frontend.txt s3://travel-ease-snyk-frontend-report-b/
+                        """
+                    }
+                }
+            }
+        }
 
         stage('Starting Services') {
             steps {
