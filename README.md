@@ -68,23 +68,5 @@ This pipeline automates the promotion of code from development to production:
 * **Containerization:** Docker
 * **Container Orchestration:** Kubernetes (EKS)
 * **Source Control:** GitHub
-
+* 
 ---
-
-## 📚 How to Contribute
-
-1. Fork the repository.
-2. Create a feature branch.
-3. Push your changes.
-4. Open a pull request.
-5. Ensure all GitHub Actions checks pass.
-
----
-
-## 📞 Contact
-
-For questions or support, please reach out to the DevOps team.
-
----
-
-Let me know if you'd like me to package this up as a `README.md` file or adjust the wording!
