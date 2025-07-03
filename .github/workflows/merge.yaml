@@ -43,6 +43,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Debug AWS Key Presence (remove after testing)
+        run: |
+          if [ -z "${{ secrets.AWS_ACCESS_KEY_ID }}" ]; then
+            echo "❌ AWS_ACCESS_KEY_ID is NOT set!"
+            exit 1
+          else
+            echo "✅ AWS_ACCESS_KEY_ID is present (not printing for security)"
+          fi
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
         with:
