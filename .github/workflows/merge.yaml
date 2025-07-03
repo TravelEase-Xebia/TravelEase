@@ -65,7 +65,7 @@ jobs:
 
       - name: Build and push Docker image to ECR
         env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: travelease/frontend
           IMAGE_TAG: ${{ github.run_id }}
         run: |
