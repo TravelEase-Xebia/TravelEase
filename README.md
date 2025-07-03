@@ -7,7 +7,7 @@ this frontend offers fast loading, responsive design, and integration with backe
 
 User Authentication
 Sign Up and Login functionality
-Secure session handling
+Secure session handling 
 Search Flights 
 Search based on source, destination, and date
 Book Flights
