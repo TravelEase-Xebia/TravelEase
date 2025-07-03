@@ -1,0 +1,19 @@
+# .github/workflows/frontend-caller.yml
+name: Frontend CI/CD
+
+on:
+  pull_request:
+    branches:
+      - frontend
+
+jobs:
+  call-deploy:
+    uses: ./.github/workflows/frontend-reusable.yml
+    with:
+      ecr-repository: travelease/frontend
+      kubernetes-deploy-file: kubernetes/deploy.yaml
+    secrets:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
