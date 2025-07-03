@@ -49,11 +49,10 @@ jobs:
 
       - name: Build image
         env:
-          ECR_REGISTRY: 831926586767.dkr.ecr.us-east-1.amazonaws.com
-          ECR_REPOSITORY: travelease/frontend
+          ECR_IMAGE_URI: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/frontend
           IMAGE_TAG: ${{ github.run_id }}
         run: |
-          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -t $ECR_IMAGE_URI:$IMAGE_TAG .
 
   updatek8s:
     runs-on: ubuntu-latest
