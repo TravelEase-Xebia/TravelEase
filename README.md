@@ -4,7 +4,7 @@ Welcome to the frontend of TravelEase – a modern, cloud-native travel booking 
 this frontend offers fast loading, responsive design, and integration with backend microservices for flight booking, payments, and user authentication.
 
  🚀 Features 
-
+ 
 User Authentication
 Sign Up and Login functionality
 Secure session handling 
