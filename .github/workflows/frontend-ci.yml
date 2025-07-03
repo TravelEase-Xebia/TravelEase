@@ -49,7 +49,7 @@ jobs:
 
       - name: Build image
         env:
-          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ECR_REGISTRY: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/frontend
           ECR_REPOSITORY: travelease/frontend
           IMAGE_TAG: ${{ github.run_id }}
         run: |
