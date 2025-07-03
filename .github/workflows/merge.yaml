@@ -46,14 +46,7 @@ jobs:
       - name: Debug AWS Key Presence (remove after testing)
         env:
           AWS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        run: |
-          if [ -z "$AWS_KEY" ]; then
-            echo "❌ AWS_ACCESS_KEY_ID is NOT set!"
-            exit 1
-          else
-            echo "✅ AWS_ACCESS_KEY_ID is present (not printing for security)"
-          fi
-
+        run: env
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
