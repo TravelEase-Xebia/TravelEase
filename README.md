@@ -3,7 +3,7 @@ TravelEase Frontend ✈️
 Welcome to the frontend of TravelEase – a modern, cloud-native travel booking platform focused on seamless user experience and performance. Built using React + Vite, 
 this frontend offers fast loading, responsive design, and integration with backend microservices for flight booking, payments, and user authentication.
 
- 🚀 Features
+ 🚀 Features 
 
 User Authentication
 Sign Up and Login functionality
