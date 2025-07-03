@@ -50,11 +50,6 @@ pipeline {
                         withCredentials([
                             [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
                         ]) {
-                    dir('payment') {
-                        sh """
-                            aws s3 cp snyk-payment.txt s3://travel-ease-snyk-report-b/
-                        """
-                    }
                     dir('booking') {
                         sh """
                             aws s3 cp snyk-booking-report.txt s3://travel-ease-booking-b-snyk/
