@@ -61,7 +61,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GIT_TOKEN }}
 
       - name: Update tag in kubernetes deployment manifest
         run: |
