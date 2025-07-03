@@ -51,8 +51,8 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v2
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ AWS_REGION }}  
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}  
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -60,7 +60,7 @@ jobs:
 
       - name: Build and push Docker image to ECR
         env:
-          ECR_REGISTRY: ${{ ECR_REGISTRY }}
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
           ECR_REPOSITORY: travelease/frontend
           IMAGE_TAG: ${{ github.run_id }}
         run: |
@@ -81,7 +81,7 @@ jobs:
 
         - name: Update tag in kubernetes deployment manifest
           run: | 
-               sed -i "s|image: .*|image: ${{ ECR_REGISTRY }}/travelease/frontend:${{github.run_id}}|" kubernetes/deploy.yaml
+               sed -i "s|image: .*|image: ${{ secrets.ECR_REGISTRY }}/travelease/frontend:${{github.run_id}}|" kubernetes/deploy.yaml
         
         - name: Commit and push changes
           run: |
