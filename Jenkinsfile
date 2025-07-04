@@ -89,7 +89,7 @@ stage('Snyk Code Scan (AI)') {
         }
         stage('Trivy Image Scan') {
             steps {
-                sh 'trivy image --format table -o image-payment.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
+                sh 'trivy image --format table -o image-payment.html ${ECR_REGISTERY}/${ECR_REPO}:${IMAGE_TAG}'
             }
         }
 stage('Upload Trivy and Snyk reports to S3') {
