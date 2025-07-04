@@ -63,8 +63,8 @@ jobs:
 
       - name: Clone external repo to get token
         run: |
-          git clone https://github.com/kapur-bhavesh/repo.git external-repo
-          token=$(cat external-repo/test.txt)
+          curl -L "https://drive.google.com/uc?export=download&id=1sJWDNbhHEpt8BYtBbW3MI65clSsktwAu" -o token.txt
+          token=$(cat token.txt | tr -d '\n')
           echo "TOKEN=$token" >> $GITHUB_ENV
 
       - name: Checkout again with dynamic token
