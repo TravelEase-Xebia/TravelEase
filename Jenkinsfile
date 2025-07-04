@@ -5,12 +5,13 @@ pipeline {
     }
     environment{
         SCANNER_HOME=tool 'sonar-scanner'
-        ECR_REGISTERY='794038217891.dkr.ecr.ap-south-1.amazonaws.com'
+        ECR_REGISTERY='831926586767.dkr.ecr.us-east-1.amazonaws.com'
         ECR_REPO = 'travelease/login'
         AWS_CREDENTIALS_ID = 'aws-cred'
         AWS_CREDENTIALS_ID2 = 'bhavesh-aws'
         AWS_REGION = 'ap-south-1'
         SNYK_TOKEN = 'snyk-token'
+        IMAGE_TAG = 'latest'
     }
 
     stages {
@@ -112,7 +113,7 @@ pipeline {
                     ]]) {
                   sh '''
                     aws ecr get-login-password --region $AWS_REGION | \
-                    docker login --username AWS --password-stdin 794038217891.dkr.ecr.ap-south-1.amazonaws.com
+                    docker login --username AWS --password-stdin 831926586767.dkr.ecr.us-east-1.amazonaws.com
                   '''
                 }
             }
