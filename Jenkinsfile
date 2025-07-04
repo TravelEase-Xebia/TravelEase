@@ -89,7 +89,7 @@ pipeline {
         }
         stage('Trivy Image Scan') {
             steps {
-                sh 'trivy image --format table -o image-login.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
+                sh 'trivy image --format table -o image-login.html ${ECR_REGISTERY}/${ECR_REPO}:${IMAGE_TAG}'
             }
         }
         stage('Upload Trivy scan reports to S3') {
