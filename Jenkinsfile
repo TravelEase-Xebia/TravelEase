@@ -5,12 +5,13 @@ pipeline {
     }
     environment{
         SCANNER_HOME=tool 'sonar-scanner'
-        ECR_REGISTERY='794038217891.dkr.ecr.ap-south-1.amazonaws.com'
+        ECR_REGISTERY='831926586767.dkr.ecr.us-east-1.amazonaws.com'
         ECR_REPO = 'travelease/payment'
         AWS_CREDENTIALS_ID = 'aws-cred'
         AWS_CREDENTIALS_ID2= 'bhavesh-aws'
         AWS_REGION = 'ap-south-1'
         SNYK_TOKEN = 'snyk-token'
+        IMAGE_TAG = 'latest'
     }
 
     stages {
@@ -81,7 +82,7 @@ stage('Snyk Code Scan (AI)') {
         stage('Build Image') {
             steps {
                 dir('payment') {
-                  sh "docker build -t ${ECR_REGISTERY}/${ECR_REPO}:latest ."
+                 sh "docker build -t ${ECR_REGISTERY}/${ECR_REPO}:${IMAGE_TAG} ."
                 }
                 
             }
@@ -121,7 +122,7 @@ stage('Upload Trivy and Snyk reports to S3') {
                     ]]) {
                   sh '''
                     aws ecr get-login-password --region $AWS_REGION | \
-                    docker login --username AWS --password-stdin 794038217891.dkr.ecr.ap-south-1.amazonaws.com
+                    docker login --username AWS --password-stdin 831926586767.dkr.ecr.us-east-1.amazonaws.com
                   '''
                 }
             }
@@ -129,7 +130,7 @@ stage('Upload Trivy and Snyk reports to S3') {
         stage('Push to ECR') {
             steps {
                 script{
-                    sh "docker push ${ECR_REGISTERY}/${ECR_REPO}:latest"
+                    sh "docker push ${ECR_REGISTERY}/${ECR_REPO}:${IMAGE_TAG}"
                 }
             }
         }
