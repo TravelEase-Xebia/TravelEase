@@ -9,22 +9,6 @@ permissions:
   id-token: write
   
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '24'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
 
   code_quality:
     runs-on: ubuntu-latest
@@ -42,21 +26,20 @@ jobs:
 
   docker:
     runs-on: ubuntu-latest
-    needs: build
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Build image
         env:
-          ECR_IMAGE_URI: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/frontend
+          ECR_IMAGE_URI: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/login
           IMAGE_TAG: ${{ github.run_id }}
         run: |
           docker build -t $ECR_IMAGE_URI:$IMAGE_TAG .
 
   updatek8s:
     runs-on: ubuntu-latest
-    needs: [build, docker]
+    needs: [docker]
     steps:
       - name: Checkout current repo
         uses: actions/checkout@v4
@@ -74,7 +57,7 @@ jobs:
 
       - name: Update tag in kubernetes deployment manifest
         run: |
-          sed -i "s|image: .*|image: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/frontend:${{ github.run_id }}|" kubernetes/deploy.yaml
+          sed -i "s|image: .*|image: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/login:${{ github.run_id }}|" kubernetes/deploy.yml
           sed -i "s|IMAGE_TAG = .*|IMAGE_TAG = ${{ github.run_id }}|" Jenkinsfile
 
       - name: Commit and push changes
@@ -82,5 +65,5 @@ jobs:
           git config --global user.email "madhujeet111@gmail.com"
           git config --global user.name "kavya-singh101"
           git add .
-          git commit -m "[CI]: Update frontend image tag"
-          git push origin HEAD:frontend -f
+          git commit -m "[CI]: Update login image tag"
+          git push origin HEAD:login -f
