@@ -97,7 +97,7 @@ pipeline {
         stage('Build Image') {
             steps {
                 dir('booking') {
-                  sh "docker build -t ${ECR_REGISTERY}/${ECR_REPO}:latest ."
+                  sh "docker build -t ${ECR_REGISTERY}/${ECR_REPO}:${IMAGE_TAG} ."
                 }
                 
             }
