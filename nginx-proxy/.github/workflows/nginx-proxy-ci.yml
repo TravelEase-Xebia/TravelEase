@@ -1,8 +1,8 @@
-name: booking-microservice
+name: nginx-proxy-microservice
 on:
   pull_request:
     branches:
-      - booking
+      - nginx-proxy
 
 permissions:
   contents: read
@@ -10,19 +10,6 @@ permissions:
   
 jobs:
 
-  code_quality:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '24'
-
-      - name: Run ESLint
-        run: npm run lint
 
   docker:
     runs-on: ubuntu-latest
@@ -32,7 +19,7 @@ jobs:
 
       - name: Build image
         env:
-          ECR_IMAGE_URI: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/booking
+          ECR_IMAGE_URI: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/nginx-proxy
           IMAGE_TAG: ${{ github.run_id }}
         run: |
           docker build -t $ECR_IMAGE_URI:$IMAGE_TAG .
@@ -57,7 +44,7 @@ jobs:
 
       - name: Update tag in kubernetes deployment manifest
         run: |
-          sed -i "s|image: .*|image: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/booking:${{ github.run_id }}|" kubernetes/deploy.yml
+          sed -i "s|image: .*|image: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/nginx-proxy:${{ github.run_id }}|" kubernetes/deploy.yml
           sed -i "s|IMAGE_TAG = .*|IMAGE_TAG = ${{ github.run_id }}|" Jenkinsfile
 
       - name: Commit and push changes
@@ -65,5 +52,5 @@ jobs:
           git config --global user.email "madhujeet111@gmail.com"
           git config --global user.name "kavya-singh101"
           git add .
-          git commit -m "[CI]: Update booking image tag"
-          git push origin HEAD:booking -f
+          git commit -m "[CI]: Update nginx-proxy image tag"
+          git push origin HEAD:nginx-proxy -f
