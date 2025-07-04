@@ -72,7 +72,7 @@ jobs:
 
       - name: Update tag in kubernetes deployment manifest
         run: |
-          sed -i "s|image: .*|image: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/payment:${{ github.run_id }}|" kubernetes/deploy.yaml
+          sed -i "s|image: .*|image: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/payment:${{ github.run_id }}|" kubernetes/deploy.yml
           sed -i "s|IMAGE_TAG = .*|IMAGE_TAG = ${{ github.run_id }}|" Jenkinsfile
 
       - name: Commit and push changes
