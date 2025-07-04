@@ -118,7 +118,7 @@ stage('Upload Trivy and Snyk reports to S3') {
             steps {
                 withCredentials([[
                   $class: 'AmazonWebServicesCredentialsBinding',
-                  credentialsId: 'aws-cred'
+                  credentialsId: 'bhavesh-aws'
                     ]]) {
                   sh '''
                     aws ecr get-login-password --region $AWS_REGION | \
