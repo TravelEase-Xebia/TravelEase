@@ -121,7 +121,7 @@ stage('Upload Trivy and Snyk reports to S3') {
                   credentialsId: 'aws-cred'
                     ]]) {
                   sh '''
-                    aws ecr get-login-password --region $AWS_REGION | \
+                    aws ecr get-login-password --region us-east-1 | \
                     docker login --username AWS --password-stdin 831926586767.dkr.ecr.us-east-1.amazonaws.com
                   '''
                 }
