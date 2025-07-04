@@ -9,7 +9,7 @@ It allows users to **Pay for their flight tickets**, and then redirects them bac
 
 - Choose **Number of seats**
 - Save payment details to a **MongoDB Atlas database**.
-- Redirect to **Booking Microservice** after successful booking (integration-ready)..
+- Redirect to **Booking Microservice** after successful booking (integration-ready)...
 
 ---
 
