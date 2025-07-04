@@ -1,0 +1,49 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: frontend
+  annotations:
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+spec:
+  ingressClassName: alb
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: "/"
+            pathType: Prefix
+            backend:
+              service:
+                name: travelease-frontend-proxy
+                port:
+                  number: 80
+          - path: "/auth/payment/"
+            pathType: Prefix
+            backend:
+              service:
+                name: travelease-payment
+                port:
+                  number: 5070
+          - path: "/auth/booking/"
+            pathType: Prefix
+            backend:
+              service:
+                name: travelease-booking
+                port:
+                  number: 3001
+          - path: "/auth/login/"
+            pathType: Prefix
+            backend:
+              service:
+                name: travelease-login
+                port:
+                  number: 5050
+          - path: "/auth/register/"
+            pathType: Prefix
+            backend:
+              service:
+                name: travelease-login
+                port:
+                  number: 5050
