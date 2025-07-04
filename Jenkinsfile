@@ -6,7 +6,7 @@ pipeline {
         AWS_CREDENTIALS_ID = 'aws-cred'
         AWS_CREDENTIALS_ID2 = 'bhavesh-cred'
         AWS_REGION = 'ap-south-1'
-        IMAGE_TAG = 'latest'
+        IMAGE_TAG = 16073233821
     }
 
     stages {
