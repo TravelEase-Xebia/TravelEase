@@ -1,13 +1,33 @@
-name: frontend-microservice
+# File: .github/workflows/frontend-reusable.yml
+name: Reusable Frontend CI/CD
+
 on:
-  pull_request:
-    branches:
-      - frontend
+  workflow_call:
+    secrets:
+      AWS_ACCESS_KEY_ID:
+        required: true
+      AWS_SECRET_ACCESS_KEY:
+        required: true
+      ECR_REGISTRY:
+        required: true
+      GH_TOKEN:
+        required: true
+    inputs:
+      ecr-repository:
+        required: true
+        type: string
+      kubernetes-deploy-file:
+        required: true
+        type: string
+      node-version:
+        required: false
+        type: string
+        default: '24'
 
 permissions:
   contents: read
   id-token: write
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,7 +38,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '24'
+          node-version: ${{ inputs.node-version }}
 
       - name: Install dependencies
         run: npm install
@@ -35,7 +55,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: '24'
+          node-version: ${{ inputs.node-version }}
 
       - name: Run ESLint
         run: npm run lint
@@ -47,18 +67,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Debug AWS Key Presence (remove after testing)
-        env:
-          AWS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        run: env
-
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ap-south-1
-          audience: sts.amazonaws.com
 
       - name: Login to Amazon ECR
         id: login-ecr
@@ -66,8 +80,8 @@ jobs:
 
       - name: Build and push Docker image to ECR
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          ECR_REPOSITORY: travelease/frontend
+          ECR_REGISTRY: ${{ secrets.ECR_REGISTRY }}
+          ECR_REPOSITORY: ${{ inputs.ecr-repository }}
           IMAGE_TAG: ${{ github.run_id }}
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -84,7 +98,7 @@ jobs:
 
       - name: Update tag in kubernetes deployment manifest
         run: |
-          sed -i "s|image: .*|image: ${{ secrets.ECR_REGISTRY }}/travelease/frontend:${{ github.run_id }}|" kubernetes/deploy.yaml
+          sed -i "s|image: .*|image: ${{ secrets.ECR_REGISTRY }}/${{ inputs.ecr-repository }}:${{ github.run_id }}|" ${{ inputs.kubernetes-deploy-file }}
 
       - name: Commit and push changes
         run: |
