@@ -11,10 +11,6 @@ jobs:
         with:
           target: 'https://travelease.bhaveshdevops.in'
           allow_issue_writing: false
-          output_file: 'zap-report.html'
-
-      - name: List files in workspace after ZAP Scan
-        run: ls -al
 
       - name: Upload ZAP Scan Report
         uses: actions/upload-artifact@v4
