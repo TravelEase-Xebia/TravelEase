@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Run ZAP Full Scan via Docker
         run: |
-          docker run --rm -v ${{ github.workspace }}:/zap/wrk \
+          docker run --rm --user 0 -v ${{ github.workspace }}:/zap/wrk \
             ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
             -t https://travelease.bhaveshdevops.in \
             -r zap-report.html \
