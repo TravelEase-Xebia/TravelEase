@@ -1,18 +1,28 @@
+name: ZAP Full Scan
+
 on: [push]
 
 jobs:
   zap_scan:
     runs-on: ubuntu-latest
-    name: Scan the webapplication
-    steps:
-      - name: ZAP Scan
-        id: zap
-        uses: zaproxy/action-full-scan@v0.12.0
-        with:
-          target: 'https://travelease.bhaveshdevops.in'
-          allow_issue_writing: false
+    name: Full ZAP Scan against live site
 
-      - name: Upload ZAP Scan Report
+    steps:
+      - name: Pull ZAP Docker image
+        run: docker pull owasp/zap2docker-stable
+
+      - name: Run ZAP Full Scan via Docker
+        run: |
+          docker run --rm -v ${{ github.workspace }}:/zap/wrk \
+            owasp/zap2docker-stable zap-full-scan.py \
+            -t https://travelease.bhaveshdevops.in \
+            -r zap-report.html \
+            -I -j
+
+      - name: List files after scan
+        run: ls -al
+
+      - name: Upload ZAP HTML Report
         uses: actions/upload-artifact@v4
         with:
           name: zap-scan-report
