@@ -6,7 +6,14 @@ jobs:
     name: Scan the webapplication
     steps:
       - name: ZAP Scan
+        id: zap
         uses: zaproxy/action-full-scan@v0.12.0
         with:
           target: 'https://travelease.bhaveshdevops.in'
           allow_issue_writing: false
+
+      - name: Upload ZAP Scan Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-scan-report
+          path: zap-report.html
