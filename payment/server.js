@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 app.use(express.static("public"));
 
 
-app.post("/api/payment", async(req,res)=> {
+app.post("/api/payment/", async(req,res)=> {
     const { departure, destination, date, flight, tickets, total } = req.body;
 
   try {
