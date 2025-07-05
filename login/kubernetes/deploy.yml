@@ -26,7 +26,7 @@ spec:
       serviceAccountName: travelease-deploy   
       containers:
         - name: travelease-login
-          image: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/login:16073159175
+          image: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/login:16090376025
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5050
