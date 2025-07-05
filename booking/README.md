@@ -23,7 +23,7 @@ MONGO_URI=mongodb+srv://<username>:<password>@<cluster-url>
 ```
 ---
 
-## 📡 API Endpoints
+## 📡 API Endpoints.
 
 | Method | Endpoint        | Description                  |
 |:--------|:----------------|:------------------------------|
