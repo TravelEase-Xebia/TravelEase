@@ -26,7 +26,7 @@ spec:
       serviceAccountName: travelease-deploy   
       containers:
         - name: travelease-frontend
-          image: 794038217891.dkr.ecr.ap-south-1.amazonaws.com/travelease/frontend:latest
+          image: 831926586767.dkr.ecr.us-east-1.amazonaws.com/travelease/frontend:16074697737
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80

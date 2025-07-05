@@ -11,7 +11,7 @@ pipeline {
         AWS_CREDENTIALS_ID2 = 'bhavesh-aws'
         AWS_REGION = 'ap-south-1'
         SNYK_TOKEN = 'snyk-token'
-        IMAGE_TAG = 'latest'
+        IMAGE_TAG = 16074697737
     }
 
     stages {
@@ -127,7 +127,7 @@ pipeline {
                   credentialsId: 'aws-cred'
                     ]]) {
                   sh '''
-                    aws ecr get-login-password --region $AWS_REGION | \
+                    aws ecr get-login-password --region us-east-1 | \
                     docker login --username AWS --password-stdin 831926586767.dkr.ecr.us-east-1.amazonaws.com
                   '''
                 }
