@@ -49,6 +49,7 @@ const Payment = () => {
   };
 
   return (
+
     <div className="payment-container">
       <h1>Complete Your Booking</h1>
 
