@@ -11,7 +11,7 @@ pipeline {
         AWS_CREDENTIALS_ID2 = 'bhavesh-aws'
         AWS_REGION = 'ap-south-1'
         SNYK_TOKEN = 'snyk-token'
-        IMAGE_TAG = 16106283494
+        IMAGE_TAG = 16107581639
     }
 
     stages {
