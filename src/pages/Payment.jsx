@@ -49,34 +49,38 @@ const Payment = () => {
   };
 
   return (
-     <><Helmet>
+    <>
+    <Helmet>
       <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-    </Helmet><div className="payment-container">
-        <h1>Complete Your Booking</h1>
+    </Helmet>
 
-        <div id="flightDetails">
-          <p><strong>Flight:</strong> {flight}</p>
-          <p><strong>Route:</strong> {departure} ➝ {destination}</p>
-          <p><strong>Date:</strong> {date}</p>
-          <p><strong>Price per Ticket:</strong> ₹{flightPrice}</p>
-        </div>
+    <div className="payment-container">
+      <h1>Complete Your Booking</h1>
 
-        <form id="paymentForm" onSubmit={handleSubmit}>
-          <label>
-            Number of Tickets:
-            <input
-              type="number"
-              min="1"
-              value={tickets}
-              onChange={(e) => setTickets(parseInt(e.target.value))}
-              required />
-          </label>
+      <div id="flightDetails">
+        <p><strong>Flight:</strong> {flight}</p>
+        <p><strong>Route:</strong> {departure} ➝ {destination}</p>
+        <p><strong>Date:</strong> {date}</p>
+        <p><strong>Price per Ticket:</strong> ₹{flightPrice}</p>
+      </div>
 
-          <p>Total Amount: ₹{total}</p>
+      <form id="paymentForm" onSubmit={handleSubmit}>
+        <label>
+          Number of Tickets:
+          <input
+            type="number"
+            min="1"
+            value={tickets}
+            onChange={(e) => setTickets(parseInt(e.target.value))}
+            required
+          />
+        </label>
 
-          <button type="submit">Pay & Confirm</button>
-        </form>
-      </div></>
+        <p>Total Amount: ₹{total}</p>
+
+        <button type="submit">Pay & Confirm</button>
+      </form>
+    </div></>
   );
 };
 
