@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Helmet } from "react-helmet"
+
 const Payment = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -49,10 +49,6 @@ const Payment = () => {
   };
 
   return (
-    <>
-    <Helmet>
-      <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
-    </Helmet>
 
     <div className="payment-container">
       <h1>Complete Your Booking</h1>
@@ -80,7 +76,7 @@ const Payment = () => {
 
         <button type="submit">Pay & Confirm</button>
       </form>
-    </div></>
+    </div>
   );
 };
 
