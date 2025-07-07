@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-
+import { Helmet } from "react-helmet"
 const Payment = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -49,33 +49,34 @@ const Payment = () => {
   };
 
   return (
-    <div className="payment-container">
-      <h1>Complete Your Booking</h1>
+     <><Helmet>
+      <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+    </Helmet><div className="payment-container">
+        <h1>Complete Your Booking</h1>
 
-      <div id="flightDetails">
-        <p><strong>Flight:</strong> {flight}</p>
-        <p><strong>Route:</strong> {departure} ➝ {destination}</p>
-        <p><strong>Date:</strong> {date}</p>
-        <p><strong>Price per Ticket:</strong> ₹{flightPrice}</p>
-      </div>
+        <div id="flightDetails">
+          <p><strong>Flight:</strong> {flight}</p>
+          <p><strong>Route:</strong> {departure} ➝ {destination}</p>
+          <p><strong>Date:</strong> {date}</p>
+          <p><strong>Price per Ticket:</strong> ₹{flightPrice}</p>
+        </div>
 
-      <form id="paymentForm" onSubmit={handleSubmit}>
-        <label>
-          Number of Tickets:
-          <input
-            type="number"
-            min="1"
-            value={tickets}
-            onChange={(e) => setTickets(parseInt(e.target.value))}
-            required
-          />
-        </label>
+        <form id="paymentForm" onSubmit={handleSubmit}>
+          <label>
+            Number of Tickets:
+            <input
+              type="number"
+              min="1"
+              value={tickets}
+              onChange={(e) => setTickets(parseInt(e.target.value))}
+              required />
+          </label>
 
-        <p>Total Amount: ₹{total}</p>
+          <p>Total Amount: ₹{total}</p>
 
-        <button type="submit">Pay & Confirm</button>
-      </form>
-    </div>
+          <button type="submit">Pay & Confirm</button>
+        </form>
+      </div></>
   );
 };
 
