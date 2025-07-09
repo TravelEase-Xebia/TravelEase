@@ -11,7 +11,7 @@ pipeline {
         AWS_CREDENTIALS_ID2 = 'bhavesh-aws'
         AWS_REGION = 'ap-south-1'
         SNYK_TOKEN = 'snyk-token'
-        IMAGE_TAG = 16158748672
+        IMAGE_TAG = 16165972646
     }
 
     stages {
@@ -86,7 +86,6 @@ pipeline {
                                 sh """
                                     snyk auth $SNYK_TOKEN
                                     snyk code test > snyk-frontend.txt
-                                    aws s3 cp snyk-frontend.txt s3://travel-ease-snyk-frontend-report-b/
                                 """
                             }
                         }
