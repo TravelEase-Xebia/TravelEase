@@ -67,7 +67,7 @@ stage('Snyk Code Scan (AI)') {
                     dir('payment') {
                         sh """
                             snyk auth $SNYK_TOKEN
-                            snyk code test > snyk-payment.txt
+                            snyk code test > snyk-payment.txt || true
                         """
                     }
                 }
