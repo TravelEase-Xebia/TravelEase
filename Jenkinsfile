@@ -86,7 +86,6 @@ pipeline {
                             sh '''
                                 snyk auth $SNYK_TOKEN
                                 # Run Snyk code test but don't stop the pipeline even if it fails
-                                aws s3 cp snyk-booking.txt s3://travel-ease-booking-b-snyk/
                                 snyk code test > snyk-booking.txt
                             '''
                         }
