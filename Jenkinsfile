@@ -45,14 +45,14 @@ pipeline {
             }
         }
 
-                stage('Snyk Code Scan (AI)') {
+                stage('Uploading Snyk AI Reports') {
                     steps { 
                         withCredentials([
                             [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
                         ]) {
                     dir('booking') {
                         sh """
-                            aws s3 cp snyk-booking-report.txt s3://travel-ease-booking-b-snyk/
+                            aws s3 cp snyk-booking.txt s3://travel-ease-booking-b-snyk/
                         """
                     }
                     dir('login') {
@@ -68,6 +68,31 @@ pipeline {
                 }
             }
         }
+
+
+        stage('Zap Scan') {
+            steps {
+                withCredentials([
+                            [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
+                        ]) {
+                script {
+                    sh ''' 
+                    docker run --rm --user 0 -v $WORKSPACE:/zap/wrk \
+                    ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
+                    -t https://travelease.bhaveshdevops.in \
+                    -r zap-report.html \
+                    -I -j
+                    '''
+                    sh 'ls -al'
+
+                    archiveArtifacts artifacts: 'zap-report.html', allowEmptyArchive: false
+                    sh '''
+                    aws s3 cp zap.report.html s3://travelease-zap-report/
+                    '''
+                }
+            }
+        }
+    }
 
         stage('Starting Services') {
             steps {
