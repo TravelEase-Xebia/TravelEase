@@ -69,8 +69,15 @@ pipeline {
             }
         }
 
+        stage('Starting Services') {
+            steps {
+                dir('TravelEase') {
+                    sh "docker compose up --build -d"
+                }
+            }
+        }
 
-        stage('Zap Scan') {
+                stage('Zap Scan') {
             steps {
                 withCredentials([
                             [$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'bhavesh-aws']
@@ -79,7 +86,7 @@ pipeline {
                     sh ''' 
                     docker run --rm --user 0 -v $WORKSPACE:/zap/wrk \
                     ghcr.io/zaproxy/zaproxy:stable zap-full-scan.py \
-                    -t https://travelease.bhaveshdevops.in \
+                    -t https://dev.bhaveshdevops.in \
                     -r zap-report.html \
                     -I -j
                     '''
@@ -87,20 +94,12 @@ pipeline {
 
                     archiveArtifacts artifacts: 'zap-report.html', allowEmptyArchive: false
                     sh '''
-                    aws s3 cp zap.report.html s3://travelease-zap-report/
+                    aws s3 cp zap-report.html s3://travelease-zap-report/
                     '''
                 }
             }
         }
     }
-
-        stage('Starting Services') {
-            steps {
-                dir('TravelEase') {
-                    sh "docker compose up --build -d"
-                }
-            }
-        }
 
     }
 }
