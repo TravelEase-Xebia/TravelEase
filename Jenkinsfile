@@ -11,7 +11,7 @@ pipeline {
         AWS_CREDENTIALS_ID2 = 'bhavesh-aws'
         AWS_REGION = 'ap-south-1'
         SNYK_TOKEN = 'snyk-token'
-        IMAGE_TAG = 'latest'
+        IMAGE_TAG = 16090376025
     }
 
     stages {
@@ -88,7 +88,7 @@ pipeline {
         }
         stage('Trivy Image Scan') {
             steps {
-                sh 'trivy image --format table -o image-login.html ${ECR_REGISTERY}/${ECR_REPO}:latest'
+                sh 'trivy image --format table -o image-login.html ${ECR_REGISTERY}/${ECR_REPO}:${IMAGE_TAG}'
             }
         }
         stage('Upload Trivy scan reports to S3') {
