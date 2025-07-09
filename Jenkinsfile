@@ -71,7 +71,6 @@ pipeline {
                         snyk auth $SNYK_TOKEN
                         # Run Snyk code test but don't stop the pipeline even if it fails
                         snyk code test > snyk-login.txt || true
-                        aws s3 cp snyk-login.txt s3://travel-ease-snyk-login-report-b/
                     '''
                 }
             }
