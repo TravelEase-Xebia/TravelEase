@@ -1,6 +1,6 @@
 # ✈️ Payment Microservice - TravelEase
 
-This is the **Payment microservice** for the [TravelEase](https://github.com/TravelEase-Xebia/TravelEase) platform.  
+This is the **Payment microservice** for the [TravelEase](https://github.com/TravelEase-Xebia/TravelEase) platform
 It allows users to **Pay for their flight tickets**, and then redirects them back to **Booking page** for booking additional tickets.
 
 ---
